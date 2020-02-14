@@ -2,13 +2,8 @@ package cabaicatalog
 
 const (
 	Schema = `
-		schema {
-			query: Query
-		}
 		# List Cabai Products
-		type Query{
-			products(params: ProductInput!): [Product]
-		}
+		products(params: ProductInput!): [Product]
 	`
 
 	Types = `

@@ -15,7 +15,11 @@ import (
 
 var schema *graphql.Schema
 
-func init() {
+type Handler struct {
+	*cabaicatalog.CabaiCatalogHandler
+}
+
+func NewHandler() *Handler {
 	opts := []grpc.DialOption{grpc.WithInsecure(), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(12582912))}
 	conn, err := grpc.Dial("127.0.0.1:1445", opts...)
 	if err != nil {
@@ -23,8 +27,27 @@ func init() {
 	}
 	catalogConn := marketplaceproto.NewMarketplaceClient(conn)
 	productReader := grpc2.NewProductReader(catalogConn)
-	catalogHandler := cabaicatalog.NewHandler(productReader)
-	schema = graphql.MustParseSchema(cabaicatalog.Schema+cabaicatalog.Types, catalogHandler)
+	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader)
+	return &Handler{CabaiCatalogHandler: catalogHandler}
+}
+
+func NewSchemaSring() string {
+	schemaString := fmt.Sprintf(`
+		schema {
+			query: Query
+		}
+		# List Cabai Products
+		type Query{
+			%s
+		}
+	`, cabaicatalog.Schema)
+	types := cabaicatalog.Types
+	return schemaString + types
+}
+
+func init() {
+	handler := NewHandler()
+	schema = graphql.MustParseSchema(NewSchemaSring(), handler)
 }
 
 func main() {

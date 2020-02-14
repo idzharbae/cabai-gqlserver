@@ -6,15 +6,15 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/requests"
 )
 
-type Handler struct {
+type CabaiCatalogHandler struct {
 	productReader fetcher.ProductReader
 }
 
-func NewHandler(productReader fetcher.ProductReader) *Handler {
-	return &Handler{productReader: productReader}
+func NewCabaiCatalogHandler(productReader fetcher.ProductReader) *CabaiCatalogHandler {
+	return &CabaiCatalogHandler{productReader: productReader}
 }
 
-func (r *Handler) Products(ctx context.Context, args struct {
+func (r *CabaiCatalogHandler) Products(ctx context.Context, args struct {
 	Params requests.ListProduct
 }) (*[]*Product, error) {
 	res := r.productReader.ListProducts(context.Background(), args.Params)
