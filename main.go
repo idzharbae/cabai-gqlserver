@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog"
-	grpc2 "github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/fetcher/grpc"
+	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/fetcher/grpc"
+	grpcmutator "github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/mutator/grpc"
 	"github.com/idzharbae/marketplace-backend/marketplaceproto"
 	"google.golang.org/grpc"
 	"log"
@@ -26,8 +27,9 @@ func NewHandler() *Handler {
 		panic(err)
 	}
 	catalogConn := marketplaceproto.NewMarketplaceClient(conn)
-	productReader := grpc2.NewProductReader(catalogConn)
-	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader)
+	productReader := grpcfetcher.NewProductReader(catalogConn)
+	productWriter := grpcmutator.NewProductWriter(catalogConn)
+	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter)
 	return &Handler{CabaiCatalogHandler: catalogHandler}
 }
 
@@ -35,12 +37,16 @@ func NewSchemaSring() string {
 	schemaString := fmt.Sprintf(`
 		schema {
 			query: Query
+			mutation: Mutation
 		}
 		# List Cabai Products
 		type Query{
 			%s
 		}
-	`, cabaicatalog.Schema)
+		type Mutation{
+			%s
+		}
+	`, cabaicatalog.Query, cabaicatalog.Mutation)
 	types := cabaicatalog.Types
 	return schemaString + types
 }
