@@ -1,9 +1,9 @@
-package grpc
+package grpcfetcher
 
 import (
 	"context"
+	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/connection"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/data"
-	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/fetcher/connection"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/requests"
 	"github.com/idzharbae/marketplace-backend/marketplaceproto"
 )
@@ -16,15 +16,15 @@ func NewProductReader(conn connection.Connection) *ProductReader {
 	return &ProductReader{conn: conn}
 }
 
-func (pr *ProductReader) ListProducts(ctx context.Context, req requests.ListProduct) []*data.Product {
+func (pr *ProductReader) ListProducts(ctx context.Context, req requests.ListProduct) ([]*data.Product, error) {
 	res, err := pr.conn.ListProducts(context.Background(), &marketplaceproto.ListProductsReq{
 		Pagination: &marketplaceproto.Pagination{
-			Page:  1,
-			Limit: 10,
+			Page:  req.Page,
+			Limit: req.Limit,
 		},
 	})
 	if err != nil || res == nil {
-		return nil
+		return nil, err
 	}
-	return data.ProductsFromProtos(res.Products)
+	return data.ProductsFromProtos(res.Products), nil
 }

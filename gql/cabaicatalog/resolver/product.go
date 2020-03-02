@@ -6,7 +6,7 @@ import (
 )
 
 type Product struct {
-	Data data.Product
+	Data *data.Product
 }
 
 func NewProducts(ds []*data.Product) []*Product {
@@ -16,13 +16,13 @@ func NewProducts(ds []*data.Product) []*Product {
 			continue
 		}
 
-		prods = append(prods, NewProduct(*d))
+		prods = append(prods, NewProduct(d))
 	}
 
 	return prods
 }
 
-func NewProduct(data data.Product) *Product {
+func NewProduct(data *data.Product) *Product {
 	return &Product{Data: data}
 }
 
@@ -56,4 +56,8 @@ func (p *Product) CreatedAt() string {
 
 func (p *Product) UpdatedAt() string {
 	return p.Data.UpdatedAt
+}
+
+func (p *Product) SlugName() string {
+	return p.Data.SlugName
 }

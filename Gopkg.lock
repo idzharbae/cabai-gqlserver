@@ -39,12 +39,12 @@
   revision = "8334863f2c8b87c65ed4009822ca5d45a18ecee0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:97daa32c567e32bd8e59cd8bd4538093a421cc874f59ed4297d5f48c564ba962"
+  digest = "1:a327cce09d136a4f569d385526fbc430d1be7f32960ee2957f2c551362c656a1"
   name = "github.com/idzharbae/marketplace-backend"
   packages = ["marketplaceproto"]
   pruneopts = "UT"
-  revision = "3321f2ca8a392058a694eebd5d3cd3efd612f64a"
+  revision = "e4eb7cdec5c26e25566d7f4235eb89f4a1790446"
+  version = "proto_v1.0"
 
 [[projects]]
   digest = "1:11e62d6050198055e6cd87ed57e5d8c669e84f839c16e16f192374d913d1a70d"

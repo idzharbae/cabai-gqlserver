@@ -7,5 +7,5 @@ import (
 )
 
 type ProductReader interface {
-	ListProducts(ctx context.Context, req requests.ListProduct) []*data.Product
+	ListProducts(ctx context.Context, req requests.ListProduct) ([]*data.Product, error)
 }
