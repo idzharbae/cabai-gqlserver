@@ -30,8 +30,8 @@
   name = "github.com/graph-gophers/graphql-go"
 
 [[constraint]]
-  version = "proto_v1.0"
   name = "github.com/idzharbae/marketplace-backend"
+  version = "proto_v2.0"
 
 [[constraint]]
   name = "google.golang.org/grpc"

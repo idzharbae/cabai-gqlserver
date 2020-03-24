@@ -5,7 +5,7 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/connection"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/data"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/requests"
-	"github.com/idzharbae/marketplace-backend/marketplaceproto"
+	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
 )
 
 type ProductReader struct {
@@ -17,8 +17,8 @@ func NewProductReader(conn connection.Connection) *ProductReader {
 }
 
 func (pr *ProductReader) ListProducts(ctx context.Context, req requests.ListProduct) ([]*data.Product, error) {
-	res, err := pr.conn.ListProducts(context.Background(), &marketplaceproto.ListProductsReq{
-		Pagination: &marketplaceproto.Pagination{
+	res, err := pr.conn.ListProducts(context.Background(), &catalogproto.ListProductsReq{
+		Pagination: &catalogproto.Pagination{
 			Page:  req.Page,
 			Limit: req.Limit,
 		},
