@@ -5,7 +5,7 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/fetcher/grpc"
 	grpcmutator "github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/mutator/grpc"
-	"github.com/idzharbae/marketplace-backend/marketplaceproto"
+	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
@@ -26,7 +26,7 @@ func NewHandler() *Handler {
 	if err != nil {
 		panic(err)
 	}
-	catalogConn := marketplaceproto.NewMarketplaceClient(conn)
+	catalogConn := catalogproto.NewMarketplaceCatalogClient(conn)
 	productReader := grpcfetcher.NewProductReader(catalogConn)
 	productWriter := grpcmutator.NewProductWriter(catalogConn)
 	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter)

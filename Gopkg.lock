@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:0314772c6631bb25d46f0b6a46bed7145e359cbb7411db99682a3b0d1d0cd00f"
+  digest = "1:ecd73c8c5c5e48f9079e042ae733c3f3ab021218d6c4da3411d82727fd5a412a"
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
@@ -12,12 +12,12 @@
     "ptypes/timestamp",
   ]
   pruneopts = "UT"
-  revision = "d23c5127dc24889085f8ccea5c9d560a57a879d8"
-  version = "v1.3.3"
+  revision = "84668698ea25b64748563aa20726db66a6b8d299"
+  version = "v1.3.5"
 
 [[projects]]
   branch = "master"
-  digest = "1:96b756c90594a781ab2f22dcecff90407ce2788692d4ddcf8397fd0f6321ff0a"
+  digest = "1:2fd9da74a849a4dc8d3be2f3a965f2800c0d510af9acbee5e3c4bc6587c6f84b"
   name = "github.com/graph-gophers/graphql-go"
   packages = [
     ".",
@@ -36,15 +36,15 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "8334863f2c8b87c65ed4009822ca5d45a18ecee0"
+  revision = "dae41bde9ef91c12e78863f0299348612f2d6214"
 
 [[projects]]
-  digest = "1:a327cce09d136a4f569d385526fbc430d1be7f32960ee2957f2c551362c656a1"
+  digest = "1:d9913de0ae666d91187bcc6d96908a71c7edf43edda0c3172ec3104d00db4321"
   name = "github.com/idzharbae/marketplace-backend"
-  packages = ["marketplaceproto"]
+  packages = ["svc/catalog/catalogproto"]
   pruneopts = "UT"
-  revision = "e4eb7cdec5c26e25566d7f4235eb89f4a1790446"
-  version = "proto_v1.0"
+  revision = "f9656d13c1baf64f9e0e9371686ace892dc27562"
+  version = "proto_v2.0"
 
 [[projects]]
   digest = "1:11e62d6050198055e6cd87ed57e5d8c669e84f839c16e16f192374d913d1a70d"
@@ -60,7 +60,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4311090d37cc317b15a3a3d2ce9a3d187d0b667ded11339a9564b3ec38cb21e4"
+  digest = "1:f9a7240d0ea3bf872ddf93145604fb51f276141fd493ed94b48d551dba79113b"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -72,15 +72,15 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "16171245cfb220d5317888b716d69c1fb4e7992b"
+  revision = "118fecf932d8fea033f3b7aca66fba22cfdd517d"
 
 [[projects]]
   branch = "master"
-  digest = "1:21170ea1a15ba3b4e49dd934e130f4e21edf3c117e24f07502fe46e45ff3a8fc"
+  digest = "1:8b163cc073aac41680c1ce438eae6b046f04511952e60c3cff2915033fe6f58b"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "12a6c2dcc1e4cb348b57847c73987099e261714b"
+  revision = "85ca7c5b95cdf1e557abb38a283d1e61a5959c31"
 
 [[projects]]
   digest = "1:8d8faad6b12a3a4c819a3f9618cb6ee1fa1cfc33253abeeea8b55336721e3405"
@@ -109,14 +109,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0c679e19d1865dd65e7ec400bf9562d8f161cf59c4f74c0bb50f365fc9fb19eb"
+  digest = "1:1c2a9b5021f7fe23a6f880468633f407f8b600a67e29b10f1892ae4425085820"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = "UT"
-  revision = "66ed5ce911ce4978d229e861f15b63d8bf359acb"
+  revision = "3f67cca344726c97b3e8e967f95b8041980129bd"
 
 [[projects]]
-  digest = "1:de21a2d5b9c8697d83f5ab48f3e8fe3616c33ac4b2d057083662dede0e81488e"
+  digest = "1:67bc54ebd7e6ed4a5a646aed9a8cb3b24b96a5e0abeee04f9e1c252a1cb345d4"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -140,8 +140,10 @@
     "internal/buffer",
     "internal/channelz",
     "internal/envconfig",
+    "internal/grpclog",
     "internal/grpcrand",
     "internal/grpcsync",
+    "internal/grpcutil",
     "internal/resolver/dns",
     "internal/resolver/passthrough",
     "internal/syscall",
@@ -157,8 +159,8 @@
     "tap",
   ]
   pruneopts = "UT"
-  revision = "f495f5b15ae7ccda3b38c53a1bfcde4c1a58a2bc"
-  version = "v1.27.1"
+  revision = "142182889d38b76209f1d9f1d8e91d7608aff542"
+  version = "v1.28.0"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -166,7 +168,7 @@
   input-imports = [
     "github.com/graph-gophers/graphql-go",
     "github.com/graph-gophers/graphql-go/relay",
-    "github.com/idzharbae/marketplace-backend/marketplaceproto",
+    "github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto",
     "google.golang.org/grpc",
   ]
   solver-name = "gps-cdcl"

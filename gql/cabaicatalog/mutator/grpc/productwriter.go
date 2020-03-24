@@ -2,7 +2,7 @@ package grpcmutator
 
 import (
 	"context"
-	"github.com/idzharbae/marketplace-backend/marketplaceproto"
+	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
 
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/connection"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/data"
@@ -18,12 +18,12 @@ func NewProductWriter(conn connection.Connection) *ProductWriter {
 }
 
 func (pr *ProductWriter) CreateProduct(ctx context.Context, req requests.CreateProduct) (*data.Product, error) {
-	res, err := pr.conn.CreateProduct(context.Background(), &marketplaceproto.Product{
-		ShopID:     req.ShopID,
+	res, err := pr.conn.CreateProduct(context.Background(), &catalogproto.Product{
+		ShopId:     req.ShopID,
 		Name:       req.Name,
 		Quantity:   req.Quantity,
-		PricePerKG: req.PricePerKG,
-		StockKG:    float32(req.StockKG),
+		PricePerKg: req.PricePerKG,
+		StockKg:    float32(req.StockKG),
 		Slug:       req.SlugName,
 	})
 	if err != nil {
@@ -34,13 +34,13 @@ func (pr *ProductWriter) CreateProduct(ctx context.Context, req requests.CreateP
 }
 
 func (pr *ProductWriter) UpdateProduct(ctx context.Context, req requests.UpdateProduct) (*data.Product, error) {
-	res, err := pr.conn.UpdateProduct(context.Background(), &marketplaceproto.Product{
-		ID:         req.ID,
-		ShopID:     req.ShopID,
+	res, err := pr.conn.UpdateProduct(context.Background(), &catalogproto.Product{
+		Id:         req.ID,
+		ShopId:     req.ShopID,
 		Name:       req.Name,
 		Quantity:   req.Quantity,
-		PricePerKG: req.PricePerKG,
-		StockKG:    float32(req.StockKG),
+		PricePerKg: req.PricePerKG,
+		StockKg:    float32(req.StockKG),
 		Slug:       req.SlugName,
 	})
 	if err != nil {
@@ -51,8 +51,8 @@ func (pr *ProductWriter) UpdateProduct(ctx context.Context, req requests.UpdateP
 }
 
 func (pr *ProductWriter) DeleteProduct(ctx context.Context, req int32) error {
-	_, err := pr.conn.DeleteProduct(context.Background(), &marketplaceproto.ProductPKReq{
-		ID: req,
+	_, err := pr.conn.DeleteProduct(context.Background(), &catalogproto.PKReq{
+		Id: req,
 	})
 	return err
 }
