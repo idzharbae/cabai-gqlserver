@@ -1,8 +1,14 @@
 package requests
 
 type ListProduct struct {
-	Page  int32
-	Limit int32
+	ShopID int32
+	Page   int32
+	Limit  int32
+}
+
+type GetProduct struct {
+	ID       int32
+	SlugName string
 }
 
 type CreateProduct struct {

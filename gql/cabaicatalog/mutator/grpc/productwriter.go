@@ -50,9 +50,10 @@ func (pr *ProductWriter) UpdateProduct(ctx context.Context, req requests.UpdateP
 	return product, nil
 }
 
-func (pr *ProductWriter) DeleteProduct(ctx context.Context, req int32) error {
-	_, err := pr.conn.DeleteProduct(context.Background(), &catalogproto.PKReq{
-		Id: req,
+func (pr *ProductWriter) DeleteProduct(ctx context.Context, req requests.GetProduct) error {
+	_, err := pr.conn.DeleteProduct(context.Background(), &catalogproto.GetProductReq{
+		Id:   req.ID,
+		Slug: req.SlugName,
 	})
 	return err
 }

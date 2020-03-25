@@ -31,7 +31,7 @@
 
 [[constraint]]
   name = "github.com/idzharbae/marketplace-backend"
-  version = "proto_v2.0"
+  version = "proto_v3.0"
 
 [[constraint]]
   name = "google.golang.org/grpc"
