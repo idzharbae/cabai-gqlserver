@@ -5,6 +5,7 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/fetcher/grpc"
 	grpcmutator "github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/mutator/grpc"
+	"github.com/idzharbae/cabai-gqlserver/middleware"
 	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
 	"google.golang.org/grpc"
 	"log"
@@ -62,7 +63,7 @@ func main() {
 		w.Write(page)
 	}))
 
-	http.Handle("/query", &relay.Handler{Schema: schema})
+	http.Handle("/query", middleware.CorsMiddleware(&relay.Handler{Schema: schema}))
 	fmt.Println("Listening to port 4000")
 	log.Fatal(http.ListenAndServe(":4000", nil))
 }
