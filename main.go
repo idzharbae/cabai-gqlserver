@@ -59,9 +59,9 @@ func init() {
 }
 
 func main() {
-	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	http.Handle("/", middleware.CorsMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write(page)
-	}))
+	})))
 
 	http.Handle("/query", middleware.CorsMiddleware(&relay.Handler{Schema: schema}))
 	fmt.Println("Listening to port 4000")
