@@ -9,5 +9,5 @@ import (
 type ProductWriter interface {
 	CreateProduct(ctx context.Context, req requests.CreateProduct) (*data.Product, error)
 	UpdateProduct(ctx context.Context, req requests.UpdateProduct) (*data.Product, error)
-	DeleteProduct(ctx context.Context, req int32) error
+	DeleteProduct(ctx context.Context, req requests.GetProduct) error
 }

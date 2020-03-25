@@ -4,6 +4,9 @@ const (
 	Query = `
 		# List Cabai Products
 		products(params: ListProductInput!): [Product]
+		product(params: GetProductInput!): Product
+		shops(params: ListShopInput!): [Shop]
+		shop(params: GetShopInput!): Shop
 	`
 	Mutation = `
 	# Create new cabai product
@@ -11,7 +14,7 @@ const (
 	# update cabai product
 	updateProduct(params: UpdateProductInput!): Product
 	# delete cabai product
-	deleteProduct(id: Int!): Success
+	deleteProduct(params: GetProductInput!): Success
 `
 	Types = `
 		type Success{
@@ -28,9 +31,28 @@ const (
 			createdAt: String!
 			updatedAt: String!
 		}
+		type Shop {
+			id: ID!
+			name: String!
+			address: String!
+			slug: String!
+			location: Location!
+			products: [Product]
+			createdAt: String!
+			updatedAt: String!
+		}
+		type Location {
+			latitude: Float!
+			longitude: Float!
+		}
 		input ListProductInput{
+			shopID: Int = 0
 			page: Int = 1
 			limit: Int = 10
+		}
+		input GetProductInput{
+			id: ID = 0
+			slugName: String = ""
 		}
 		input CreateProductInput {
 			shopID: Int!
@@ -48,6 +70,14 @@ const (
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
+		}
+		input ListShopInput{
+			page: Int = 1
+			limit: Int = 10
+		}
+		input GetShopInput{
+			id: ID = 0
+			slugName: String = ""
 		}
 `
 )

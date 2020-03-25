@@ -29,7 +29,8 @@ func NewHandler() *Handler {
 	catalogConn := catalogproto.NewMarketplaceCatalogClient(conn)
 	productReader := grpcfetcher.NewProductReader(catalogConn)
 	productWriter := grpcmutator.NewProductWriter(catalogConn)
-	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter)
+	shopReader := grpcfetcher.NewShopReader(catalogConn)
+	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter, shopReader)
 	return &Handler{CabaiCatalogHandler: catalogHandler}
 }
 
@@ -62,8 +63,8 @@ func main() {
 	}))
 
 	http.Handle("/query", &relay.Handler{Schema: schema})
-	fmt.Println("Listening to port 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Listening to port 4000")
+	log.Fatal(http.ListenAndServe(":4000", nil))
 }
 
 var page = []byte(`
