@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
   digest = "1:ecd73c8c5c5e48f9079e042ae733c3f3ab021218d6c4da3411d82727fd5a412a"
   name = "github.com/golang/protobuf"
   packages = [
@@ -39,12 +47,15 @@
   revision = "dae41bde9ef91c12e78863f0299348612f2d6214"
 
 [[projects]]
-  digest = "1:7fcda9092be248b385a64842c142a06c2d847be67763d3a50743eb94218c5e8c"
+  digest = "1:85b7f2571e0ce16e66284121645708b2815b7eb648e067187d06e1a3a173b939"
   name = "github.com/idzharbae/marketplace-backend"
-  packages = ["svc/catalog/catalogproto"]
+  packages = [
+    "svc/auth/authproto",
+    "svc/catalog/catalogproto",
+  ]
   pruneopts = "UT"
-  revision = "a51946a98572e06152562707416eeb49c7079de3"
-  version = "proto_v3.0"
+  revision = "1fbf929521d7d47ae6a8f46f63e5f7b955702de9"
+  version = "proto_v4.1"
 
 [[projects]]
   digest = "1:11e62d6050198055e6cd87ed57e5d8c669e84f839c16e16f192374d913d1a70d"
@@ -166,8 +177,10 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/dgrijalva/jwt-go",
     "github.com/graph-gophers/graphql-go",
     "github.com/graph-gophers/graphql-go/relay",
+    "github.com/idzharbae/marketplace-backend/svc/auth/authproto",
     "github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto",
     "google.golang.org/grpc",
   ]

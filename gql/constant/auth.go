@@ -1,0 +1,5 @@
+package constant
+
+const (
+	SECRET_KEY = "SUPERCONFIDENTIALSECRETSTRING123"
+)
