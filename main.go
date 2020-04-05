@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/idzharbae/cabai-gqlserver/gql/auth"
+	authfetcher "github.com/idzharbae/cabai-gqlserver/gql/auth/fetcher/grpc"
+	authmutator "github.com/idzharbae/cabai-gqlserver/gql/auth/mutator/grpc"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/fetcher/grpc"
 	grpcmutator "github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/mutator/grpc"
 	"github.com/idzharbae/cabai-gqlserver/middleware"
+	"github.com/idzharbae/marketplace-backend/svc/auth/authproto"
 	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
 	"google.golang.org/grpc"
 	"log"
@@ -19,20 +23,37 @@ var schema *graphql.Schema
 
 type Handler struct {
 	*cabaicatalog.CabaiCatalogHandler
+	*auth.AuthHandler
 }
 
 func NewHandler() *Handler {
 	opts := []grpc.DialOption{grpc.WithInsecure(), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(12582912))}
-	conn, err := grpc.Dial("127.0.0.1:1445", opts...)
+	catalogConn, err := grpc.Dial("127.0.0.1:1445", opts...)
 	if err != nil {
 		panic(err)
 	}
+	catalogHandler := getCatalogHandler(catalogConn)
+
+	authConn, err := grpc.Dial("127.0.0.1:1444", opts...)
+	authHandler := getAuthHandler(authConn)
+
+	return &Handler{CabaiCatalogHandler: catalogHandler, AuthHandler: authHandler}
+}
+
+func getAuthHandler(conn *grpc.ClientConn) *auth.AuthHandler {
+	authConn := authproto.NewMarketplaceAuthClient(conn)
+	tokenFetcher := authfetcher.NewTokenFetcher(authConn)
+	userMutator := authmutator.NewUserMutator(authConn)
+	return auth.NewAuthHandler(tokenFetcher, userMutator)
+}
+
+func getCatalogHandler(conn *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {
 	catalogConn := catalogproto.NewMarketplaceCatalogClient(conn)
 	productReader := grpcfetcher.NewProductReader(catalogConn)
 	productWriter := grpcmutator.NewProductWriter(catalogConn)
 	shopReader := grpcfetcher.NewShopReader(catalogConn)
 	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter, shopReader)
-	return &Handler{CabaiCatalogHandler: catalogHandler}
+	return catalogHandler
 }
 
 func NewSchemaSring() string {
@@ -44,12 +65,15 @@ func NewSchemaSring() string {
 		# List Cabai Products
 		type Query{
 			%s
+			%s
 		}
 		type Mutation{
 			%s
+			%s
 		}
-	`, cabaicatalog.Query, cabaicatalog.Mutation)
-	types := cabaicatalog.Types
+	`, cabaicatalog.Query, auth.Query,
+		cabaicatalog.Mutation, auth.Mutation)
+	types := cabaicatalog.Types + auth.Types
 	return schemaString + types
 }
 

@@ -1,6 +1,9 @@
 package middleware
 
-import "net/http"
+import (
+	"context"
+	"net/http"
+)
 
 func CorsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -12,6 +15,11 @@ func CorsMiddleware(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
-		next.ServeHTTP(w, r)
+
+		// Get auth token
+		token := r.Header.Get("Authorization")
+		ctx := context.WithValue(r.Context(), "token", token)
+
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
