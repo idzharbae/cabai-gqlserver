@@ -17,6 +17,7 @@ const (
 	deleteProduct(params: GetProductInput!): Success
 `
 	Types = `
+		scalar Upload
 		type Success{
 			success: Boolean!
 		}
@@ -28,6 +29,7 @@ const (
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
+			photoURL: String!
 			createdAt: String!
 			updatedAt: String!
 		}
@@ -38,6 +40,7 @@ const (
 			slug: String!
 			location: Location!
 			products: [Product]
+			photoURL: String!
 			createdAt: String!
 			updatedAt: String!
 		}
@@ -61,6 +64,7 @@ const (
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
+			photo: Upload
 		}
 		input UpdateProductInput {
 			id: Int!
@@ -70,6 +74,7 @@ const (
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
+			photo: Upload
 		}
 		input ListShopInput{
 			page: Int = 1

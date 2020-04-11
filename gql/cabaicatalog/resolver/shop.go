@@ -51,3 +51,7 @@ func (s *Shop) CreatedAt() string {
 func (s *Shop) UpdatedAt() string {
 	return s.Data.UpdatedAt
 }
+
+func (s *Shop) PhotoURL() string {
+	return s.Data.PhotoURL
+}

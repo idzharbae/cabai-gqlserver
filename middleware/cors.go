@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"github.com/idzharbae/cabai-gqlserver/globalconstant"
 	"net/http"
 )
 
@@ -17,8 +18,8 @@ func CorsMiddleware(next http.Handler) http.Handler {
 		}
 
 		// Get auth token
-		token := r.Header.Get("Authorization")
-		ctx := context.WithValue(r.Context(), "token", token)
+		token := r.Header.Get(globalconstant.AuthHeader)
+		ctx := context.WithValue(r.Context(), globalconstant.TokenKey, token)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

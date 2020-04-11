@@ -61,3 +61,7 @@ func (p *Product) UpdatedAt() string {
 func (p *Product) SlugName() string {
 	return p.Data.SlugName
 }
+
+func (p *Product) PhotoURL() string {
+	return p.Data.PhotoURL
+}

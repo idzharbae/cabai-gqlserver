@@ -9,10 +9,10 @@ import (
 )
 
 type ShopReader struct {
-	conn connection.Connection
+	conn connection.CatalogConnection
 }
 
-func NewShopReader(conn connection.Connection) *ShopReader {
+func NewShopReader(conn connection.CatalogConnection) *ShopReader {
 	return &ShopReader{conn: conn}
 }
 

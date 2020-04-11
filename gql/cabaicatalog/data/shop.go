@@ -11,6 +11,7 @@ type Shop struct {
 	Name      string
 	Address   string
 	SlugName  string
+	PhotoURL  string
 	Location  Location
 	Products  []*Product
 	CreatedAt string
@@ -41,6 +42,7 @@ func ShopFromProto(proto *catalogproto.Shop) *Shop {
 			Longitude: proto.GetLocation().GetLongitude(),
 			Latitude:  proto.GetLocation().GetLatitude(),
 		},
+		PhotoURL:  proto.GetPhotoUrl(),
 		CreatedAt: time.Unix(proto.GetCreatedAt(), 0).Format(time.RFC3339),
 		UpdatedAt: time.Unix(proto.GetUpdatedAt(), 0).Format(time.RFC3339),
 	}

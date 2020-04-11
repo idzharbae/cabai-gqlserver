@@ -4,6 +4,7 @@ const (
 	Query = `
 		login(params: LoginInput!): Token
 		refreshToken(params: RefreshTokenInput!): Token
+		getUserInfo(token: String): User
 	`
 	Mutation = `
 		register(params: RegisterInput!): Success
@@ -14,6 +15,15 @@ const (
 		}
 		type Token{
 			token: String!
+		}
+		type User{
+			id:      ID!
+			name: String!
+			userName: String!
+			email: String!
+			phone: String!
+			type: Int!
+			photoURL: String!
 		}
 		input LoginInput{
 			userNameOrEmail: String!
@@ -29,6 +39,7 @@ const (
 			phoneNumber: String!
 			fullName: String!
 			role: Int!
+			address: String
 		}
 `
 )

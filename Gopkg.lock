@@ -47,15 +47,16 @@
   revision = "dae41bde9ef91c12e78863f0299348612f2d6214"
 
 [[projects]]
-  digest = "1:85b7f2571e0ce16e66284121645708b2815b7eb648e067187d06e1a3a173b939"
+  digest = "1:fee374e65a47f0987625b21bd1a82c659dc736abdd71afb4d67f7eacd5b246c5"
   name = "github.com/idzharbae/marketplace-backend"
   packages = [
     "svc/auth/authproto",
     "svc/catalog/catalogproto",
+    "svc/resources/protoresources",
   ]
   pruneopts = "UT"
-  revision = "1fbf929521d7d47ae6a8f46f63e5f7b955702de9"
-  version = "proto_v4.1"
+  revision = "8d8ada53e4b0a1b6f4b8d7ca49d93e63b47ccb9b"
+  version = "proto_v5.1"
 
 [[projects]]
   digest = "1:11e62d6050198055e6cd87ed57e5d8c669e84f839c16e16f192374d913d1a70d"
@@ -71,10 +72,17 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f9a7240d0ea3bf872ddf93145604fb51f276141fd493ed94b48d551dba79113b"
+  digest = "1:55282373a58040c97c06188e3bcd276f4a68d794c5934f2af0336c9133acbfb1"
+  name = "github.com/smithaitufe/go-graphql-upload"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "6442a1320276fdd1f4e651d532016c183da717b4"
+
+[[projects]]
+  branch = "master"
+  digest = "1:44aef16f8aa5ec350bbb9e5acdabf2239b1d25e8b891133e2377e2c3b37091ce"
   name = "golang.org/x/net"
   packages = [
-    "context",
     "http/httpguts",
     "http2",
     "http2/hpack",
@@ -182,6 +190,8 @@
     "github.com/graph-gophers/graphql-go/relay",
     "github.com/idzharbae/marketplace-backend/svc/auth/authproto",
     "github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto",
+    "github.com/idzharbae/marketplace-backend/svc/resources/protoresources",
+    "github.com/smithaitufe/go-graphql-upload",
     "google.golang.org/grpc",
   ]
   solver-name = "gps-cdcl"
