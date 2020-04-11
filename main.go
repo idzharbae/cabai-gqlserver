@@ -11,6 +11,7 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/middleware"
 	"github.com/idzharbae/marketplace-backend/svc/auth/authproto"
 	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
+	"github.com/idzharbae/marketplace-backend/svc/resources/protoresources"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
@@ -32,7 +33,11 @@ func NewHandler() *Handler {
 	if err != nil {
 		panic(err)
 	}
-	catalogHandler := getCatalogHandler(catalogConn)
+	resourcesConn, err := grpc.Dial("127.0.0.1:1442", opts...)
+	if err != nil {
+		panic(err)
+	}
+	catalogHandler := getCatalogHandler(catalogConn, resourcesConn)
 
 	authConn, err := grpc.Dial("127.0.0.1:1444", opts...)
 	authHandler := getAuthHandler(authConn)
@@ -47,10 +52,12 @@ func getAuthHandler(conn *grpc.ClientConn) *auth.AuthHandler {
 	return auth.NewAuthHandler(tokenFetcher, userMutator)
 }
 
-func getCatalogHandler(conn *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {
-	catalogConn := catalogproto.NewMarketplaceCatalogClient(conn)
+func getCatalogHandler(catalog, resources *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {
+	catalogConn := catalogproto.NewMarketplaceCatalogClient(catalog)
+	resourcesConn := protoresources.NewMarketplaceResourcesClient(resources)
+
 	productReader := grpcfetcher.NewProductReader(catalogConn)
-	productWriter := grpcmutator.NewProductWriter(catalogConn)
+	productWriter := grpcmutator.NewProductWriter(catalogConn, resourcesConn)
 	shopReader := grpcfetcher.NewShopReader(catalogConn)
 	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter, shopReader)
 	return catalogHandler

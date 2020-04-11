@@ -14,6 +14,7 @@ type Product struct {
 	PricePerKG int32
 	SlugName   string
 	StockKG    float64
+	PhotoURL   string
 	CreatedAt  string
 	UpdatedAt  string
 }
@@ -36,6 +37,7 @@ func ProductFromProto(proto *catalogproto.Product) *Product {
 		PricePerKG: proto.GetPricePerKg(),
 		StockKG:    float64(proto.GetStockKg()),
 		SlugName:   proto.GetSlug(),
+		PhotoURL:   proto.GetPhotoUrl(),
 		CreatedAt:  time.Unix(proto.GetCreatedAt(), 0).Format(time.RFC3339),
 		UpdatedAt:  time.Unix(proto.GetUpdatedAt(), 0).Format(time.RFC3339),
 	}

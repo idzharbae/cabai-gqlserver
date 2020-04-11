@@ -3,7 +3,7 @@ package data
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/idzharbae/cabai-gqlserver/gql/constant"
+	"github.com/idzharbae/cabai-gqlserver/globalconstant"
 )
 
 type User struct {
@@ -23,7 +23,7 @@ func UserFromToken(token string) (User, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
-		return []byte(constant.SECRET_KEY), nil
+		return []byte(globalconstant.SECRET_KEY), nil
 	})
 
 	if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok && parsedToken.Valid {
