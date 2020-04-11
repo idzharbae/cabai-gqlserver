@@ -64,7 +64,7 @@ const (
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
-			photo: Upload!
+			photo: Upload
 		}
 		input UpdateProductInput {
 			id: Int!
@@ -74,6 +74,7 @@ const (
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
+			photo: Upload
 		}
 		input ListShopInput{
 			page: Int = 1

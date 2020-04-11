@@ -4,16 +4,19 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/idzharbae/cabai-gqlserver/globalconstant"
+	"github.com/idzharbae/marketplace-backend/svc/auth/authproto"
+	"strconv"
 )
 
 type User struct {
-	ID       int64
+	ID       string
 	Name     string
 	UserName string
 	Email    string
 	Phone    string
 	Password string
 	Type     int32
+	PhotoURL string
 }
 
 func UserFromToken(token string) (User, error) {
@@ -28,7 +31,7 @@ func UserFromToken(token string) (User, error) {
 
 	if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok && parsedToken.Valid {
 		user := User{
-			ID:       int64(claims["id"].(float64)),
+			ID:       strconv.Itoa(int(claims["id"].(float64))),
 			Name:     claims["full_name"].(string),
 			UserName: claims["user_name"].(string),
 			Email:    claims["email"].(string),
@@ -42,4 +45,22 @@ func UserFromToken(token string) (User, error) {
 	}
 
 	return User{}, err
+}
+
+func UserFromProto(in *authproto.User) *User {
+	return &User{
+		ID:       strconv.Itoa(int(in.GetId())),
+		Name:     in.GetName(),
+		UserName: in.GetUserName(),
+		Email:    in.GetEmail(),
+		Phone:    in.GetPhone(),
+		Password: in.GetPassword(),
+		Type:     in.GetType(),
+		PhotoURL: in.GetPhotoUrl(),
+	}
+}
+
+func (u User) GetID() int64 {
+	id, _ := strconv.ParseInt(u.ID, 10, 64)
+	return id
 }

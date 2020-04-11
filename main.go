@@ -40,16 +40,19 @@ func NewHandler() *Handler {
 	catalogHandler := getCatalogHandler(catalogConn, resourcesConn)
 
 	authConn, err := grpc.Dial("127.0.0.1:1444", opts...)
-	authHandler := getAuthHandler(authConn)
+	authHandler := getAuthHandler(authConn, catalogConn)
 
 	return &Handler{CabaiCatalogHandler: catalogHandler, AuthHandler: authHandler}
 }
 
-func getAuthHandler(conn *grpc.ClientConn) *auth.AuthHandler {
+func getAuthHandler(conn *grpc.ClientConn, catalogConn *grpc.ClientConn) *auth.AuthHandler {
 	authConn := authproto.NewMarketplaceAuthClient(conn)
+	catalog := catalogproto.NewMarketplaceCatalogClient(catalogConn)
+
 	tokenFetcher := authfetcher.NewTokenFetcher(authConn)
-	userMutator := authmutator.NewUserMutator(authConn)
-	return auth.NewAuthHandler(tokenFetcher, userMutator)
+	userMutator := authmutator.NewUserMutator(authConn, catalog)
+	userReader := authfetcher.NewUserReader(authConn)
+	return auth.NewAuthHandler(tokenFetcher, userMutator, userReader)
 }
 
 func getCatalogHandler(catalog, resources *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {

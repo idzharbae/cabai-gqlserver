@@ -20,7 +20,7 @@ type CreateProduct struct {
 	PricePerKG int32
 	SlugName   string
 	StockKG    float64
-	Photo      upload.GraphQLUpload
+	Photo      *upload.GraphQLUpload
 }
 
 type UpdateProduct struct {
@@ -31,5 +31,5 @@ type UpdateProduct struct {
 	PricePerKG int32
 	SlugName   string
 	StockKG    float64
-	Photo      upload.GraphQLUpload
+	Photo      *upload.GraphQLUpload
 }

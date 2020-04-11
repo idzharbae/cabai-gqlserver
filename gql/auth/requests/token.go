@@ -13,4 +13,5 @@ type Register struct {
 	PhoneNumber string
 	FullName    string
 	Role        int32
+	Address     *string
 }

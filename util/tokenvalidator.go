@@ -14,7 +14,7 @@ func GetTokenFromContext(ctx context.Context) (string, error) {
 		return "", errors.New("invalid token")
 	}
 	authType, token := header[0], header[1]
-	if authType != globalconstant.AuthHeader {
+	if authType != globalconstant.AuthType {
 		return "", errors.New("invalid authentication type")
 	}
 	return token, nil
