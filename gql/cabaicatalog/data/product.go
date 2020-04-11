@@ -7,16 +7,17 @@ import (
 )
 
 type Product struct {
-	ID         string
-	ShopID     int32
-	Name       string
-	Quantity   int32
-	PricePerKG int32
-	SlugName   string
-	StockKG    float64
-	PhotoURL   string
-	CreatedAt  string
-	UpdatedAt  string
+	ID          string
+	ShopID      int32
+	Name        string
+	Quantity    int32
+	PricePerKG  int32
+	SlugName    string
+	StockKG     float64
+	PhotoURL    string
+	CreatedAt   string
+	UpdatedAt   string
+	Description string
 }
 
 func ProductsFromProtos(protos []*catalogproto.Product) []*Product {
@@ -30,15 +31,16 @@ func ProductsFromProtos(protos []*catalogproto.Product) []*Product {
 
 func ProductFromProto(proto *catalogproto.Product) *Product {
 	return &Product{
-		ID:         strconv.Itoa(int(proto.GetId())),
-		ShopID:     proto.GetShopId(),
-		Name:       proto.GetName(),
-		Quantity:   proto.GetQuantity(),
-		PricePerKG: proto.GetPricePerKg(),
-		StockKG:    float64(proto.GetStockKg()),
-		SlugName:   proto.GetSlug(),
-		PhotoURL:   proto.GetPhotoUrl(),
-		CreatedAt:  time.Unix(proto.GetCreatedAt(), 0).Format(time.RFC3339),
-		UpdatedAt:  time.Unix(proto.GetUpdatedAt(), 0).Format(time.RFC3339),
+		ID:          strconv.Itoa(int(proto.GetId())),
+		ShopID:      proto.GetShopId(),
+		Name:        proto.GetName(),
+		Quantity:    proto.GetQuantity(),
+		PricePerKG:  proto.GetPricePerKg(),
+		StockKG:     float64(proto.GetStockKg()),
+		SlugName:    proto.GetSlug(),
+		PhotoURL:    proto.GetPhotoUrl(),
+		CreatedAt:   time.Unix(proto.GetCreatedAt(), 0).Format(time.RFC3339),
+		UpdatedAt:   time.Unix(proto.GetUpdatedAt(), 0).Format(time.RFC3339),
+		Description: proto.GetDescription(),
 	}
 }
