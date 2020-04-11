@@ -65,3 +65,7 @@ func (p *Product) SlugName() string {
 func (p *Product) PhotoURL() string {
 	return p.Data.PhotoURL
 }
+
+func (p *Product) Description() string {
+	return p.Data.Description
+}

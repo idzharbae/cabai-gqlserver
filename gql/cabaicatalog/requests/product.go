@@ -14,22 +14,24 @@ type GetProduct struct {
 }
 
 type CreateProduct struct {
-	ShopID     int32
-	Name       string
-	Quantity   int32
-	PricePerKG int32
-	SlugName   string
-	StockKG    float64
-	Photo      *upload.GraphQLUpload
+	ShopID      int32
+	Name        string
+	Quantity    int32
+	PricePerKG  int32
+	SlugName    string
+	StockKG     float64
+	Photo       *upload.GraphQLUpload
+	Description string
 }
 
 type UpdateProduct struct {
-	ID         int32
-	ShopID     int32
-	Name       string
-	Quantity   int32
-	PricePerKG int32
-	SlugName   string
-	StockKG    float64
-	Photo      *upload.GraphQLUpload
+	ID          int32
+	ShopID      int32
+	Name        string
+	Quantity    int32
+	PricePerKG  int32
+	SlugName    string
+	StockKG     float64
+	Photo       *upload.GraphQLUpload
+	Description string
 }

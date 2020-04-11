@@ -32,6 +32,7 @@ const (
 			photoURL: String!
 			createdAt: String!
 			updatedAt: String!
+			description: String!
 		}
 		type Shop {
 			id: ID!
@@ -65,6 +66,7 @@ const (
 			stockKG: Float!
 			slugName: String!
 			photo: Upload
+			description: String!
 		}
 		input UpdateProductInput {
 			id: Int!

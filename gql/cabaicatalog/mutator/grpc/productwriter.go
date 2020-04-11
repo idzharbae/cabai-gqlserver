@@ -51,13 +51,14 @@ func (pr *ProductWriter) CreateProduct(ctx context.Context, req requests.CreateP
 	}
 
 	res, err := pr.catalog.CreateProduct(ctx, &catalogproto.Product{
-		ShopId:     int32(shop.GetID()),
-		Name:       req.Name,
-		Quantity:   req.Quantity,
-		PricePerKg: req.PricePerKG,
-		StockKg:    float32(req.StockKG),
-		Slug:       req.SlugName,
-		PhotoUrl:   photoURL,
+		ShopId:      int32(shop.GetID()),
+		Name:        req.Name,
+		Quantity:    req.Quantity,
+		PricePerKg:  req.PricePerKG,
+		StockKg:     float32(req.StockKG),
+		Slug:        req.SlugName,
+		PhotoUrl:    photoURL,
+		Description: req.Description,
 	})
 	if err != nil {
 		return nil, err
@@ -91,14 +92,15 @@ func (pr *ProductWriter) UpdateProduct(ctx context.Context, req requests.UpdateP
 	}
 
 	res, err := pr.catalog.UpdateProduct(context.Background(), &catalogproto.Product{
-		Id:         req.ID,
-		ShopId:     int32(shop.GetID()),
-		Name:       req.Name,
-		Quantity:   req.Quantity,
-		PricePerKg: req.PricePerKG,
-		StockKg:    float32(req.StockKG),
-		Slug:       req.SlugName,
-		PhotoUrl:   photoURL,
+		Id:          req.ID,
+		ShopId:      int32(shop.GetID()),
+		Name:        req.Name,
+		Quantity:    req.Quantity,
+		PricePerKg:  req.PricePerKG,
+		StockKg:     float32(req.StockKG),
+		Slug:        req.SlugName,
+		PhotoUrl:    photoURL,
+		Description: req.Description,
 	})
 	if err != nil {
 		return nil, err
