@@ -60,7 +60,7 @@ const (
 		input CreateProductInput {
 			shopID: Int!
 			name: String!
-			quantity: Int!
+			quantity: Int = 0
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
@@ -70,7 +70,7 @@ const (
 			id: Int!
 			shopID: Int!
 			name: String!
-			quantity: Int!
+			quantity: Int = 0
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
