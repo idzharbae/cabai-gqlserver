@@ -5,8 +5,6 @@ const (
 		# List Cabai Products
 		products(params: ListProductInput!): [Product]
 		product(params: GetProductInput!): Product
-		shops(params: ListShopInput!): [Shop]
-		shop(params: GetShopInput!): Shop
 	`
 	Mutation = `
 	# Create new cabai product
@@ -33,21 +31,6 @@ const (
 			createdAt: String!
 			updatedAt: String!
 			description: String!
-		}
-		type Shop {
-			id: ID!
-			name: String!
-			address: String!
-			slug: String!
-			location: Location!
-			products: [Product]
-			photoURL: String!
-			createdAt: String!
-			updatedAt: String!
-		}
-		type Location {
-			latitude: Float!
-			longitude: Float!
 		}
 		input ListProductInput{
 			shopID: Int = 0
@@ -77,14 +60,6 @@ const (
 			stockKG: Float!
 			slugName: String!
 			photo: Upload
-		}
-		input ListShopInput{
-			page: Int = 1
-			limit: Int = 10
-		}
-		input GetShopInput{
-			id: ID = 0
-			slugName: String = ""
 		}
 `
 )

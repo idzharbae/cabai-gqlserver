@@ -9,7 +9,11 @@ import (
 )
 
 func GetTokenFromContext(ctx context.Context) (string, error) {
-	header := strings.Split(ctx.Value(globalconstant.TokenKey).(string), " ")
+	tokenCtx := ctx.Value(globalconstant.TokenKey)
+	if tokenCtx == nil {
+		return "", errors.New("token missing from context")
+	}
+	header := strings.Split(tokenCtx.(string), " ")
 	if len(header) != 2 {
 		return "", errors.New("invalid token")
 	}

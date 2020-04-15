@@ -11,14 +11,12 @@ import (
 type CabaiCatalogHandler struct {
 	productReader fetcher.ProductReader
 	productWriter mutator.ProductWriter
-	shopReader    fetcher.ShopReader
 }
 
-func NewCabaiCatalogHandler(productReader fetcher.ProductReader, productWriter mutator.ProductWriter, shopReader fetcher.ShopReader) *CabaiCatalogHandler {
+func NewCabaiCatalogHandler(productReader fetcher.ProductReader, productWriter mutator.ProductWriter) *CabaiCatalogHandler {
 	return &CabaiCatalogHandler{
 		productReader: productReader,
 		productWriter: productWriter,
-		shopReader:    shopReader,
 	}
 }
 
@@ -74,25 +72,4 @@ func (r *CabaiCatalogHandler) DeleteProduct(ctx context.Context, args struct {
 		return nil, err
 	}
 	return &resolver.Success{}, nil
-}
-
-func (r *CabaiCatalogHandler) Shop(ctx context.Context, args struct {
-	Params requests.GetShop
-}) (*resolver.Shop, error) {
-	got, err := r.shopReader.Get(ctx, args.Params)
-	if err != nil {
-		return nil, err
-	}
-	return resolver.NewShop(got), nil
-}
-
-func (r *CabaiCatalogHandler) Shops(ctx context.Context, args struct {
-	Params requests.ListShop
-}) (*[]*resolver.Shop, error) {
-	got, err := r.shopReader.List(ctx, args.Params)
-	if err != nil {
-		return nil, err
-	}
-	shops := resolver.NewShops(got)
-	return &shops, nil
 }

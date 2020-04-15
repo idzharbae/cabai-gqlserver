@@ -10,8 +10,3 @@ type ProductReader interface {
 	List(ctx context.Context, req requests.ListProduct) ([]*data.Product, error)
 	Get(ctx context.Context, req requests.GetProduct) (*data.Product, error)
 }
-
-type ShopReader interface {
-	List(ctx context.Context, req requests.ListShop) ([]*data.Shop, error)
-	Get(ctx context.Context, req requests.GetShop) (*data.Shop, error)
-}

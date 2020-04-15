@@ -12,6 +12,7 @@ import (
 	"github.com/idzharbae/marketplace-backend/svc/auth/authproto"
 	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
 	"github.com/idzharbae/marketplace-backend/svc/resources/protoresources"
+	upload "github.com/smithaitufe/go-graphql-upload"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
@@ -61,8 +62,7 @@ func getCatalogHandler(catalog, resources *grpc.ClientConn) *cabaicatalog.CabaiC
 
 	productReader := grpcfetcher.NewProductReader(catalogConn)
 	productWriter := grpcmutator.NewProductWriter(catalogConn, resourcesConn)
-	shopReader := grpcfetcher.NewShopReader(catalogConn)
-	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter, shopReader)
+	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter)
 	return catalogHandler
 }
 
@@ -93,9 +93,12 @@ func init() {
 }
 
 func main() {
-	http.Handle("/", middleware.CorsMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	handler := middleware.CorsMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write(page)
-	})))
+	}))
+	handler = upload.Handler(handler)
+
+	http.Handle("/", handler)
 
 	http.Handle("/query", middleware.CorsMiddleware(&relay.Handler{Schema: schema}))
 	fmt.Println("Listening to port 4000")
