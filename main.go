@@ -96,11 +96,13 @@ func main() {
 	handler := middleware.CorsMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write(page)
 	}))
-	handler = upload.Handler(handler)
 
 	http.Handle("/", handler)
 
-	http.Handle("/query", middleware.CorsMiddleware(&relay.Handler{Schema: schema}))
+	queryHandler := middleware.CorsMiddleware(&relay.Handler{Schema: schema})
+	queryHandler = upload.Handler(queryHandler)
+	http.Handle("/query", queryHandler)
+
 	fmt.Println("Listening to port 4000")
 	log.Fatal(http.ListenAndServe(":4000", nil))
 }
