@@ -3,9 +3,17 @@ package requests
 import upload "github.com/smithaitufe/go-graphql-upload"
 
 type ListProduct struct {
+	Province  string
+	Search    string
+	Category  string
+	OrderBy   string
+	OrderType string
+	Page      int32
+	Limit     int32
+}
+
+type ProductsByShop struct {
 	ShopID int32
-	Page   int32
-	Limit  int32
 }
 
 type GetProduct struct {
@@ -22,6 +30,7 @@ type CreateProduct struct {
 	StockKG     float64
 	Photo       *upload.GraphQLUpload
 	Description string
+	Category    string
 }
 
 type UpdateProduct struct {
@@ -34,4 +43,5 @@ type UpdateProduct struct {
 	StockKG     float64
 	Photo       *upload.GraphQLUpload
 	Description string
+	Category    string
 }

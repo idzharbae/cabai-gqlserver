@@ -7,6 +7,7 @@ import (
 )
 
 type ProductReader interface {
-	List(ctx context.Context, req requests.ListProduct) ([]*data.Product, error)
+	Search(ctx context.Context, req requests.ListProduct) ([]*data.Product, error)
+	GetByShopID(ctx context.Context, req requests.ProductsByShop) ([]*data.Product, error)
 	Get(ctx context.Context, req requests.GetProduct) (*data.Product, error)
 }

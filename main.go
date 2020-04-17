@@ -30,6 +30,7 @@ type Handler struct {
 
 func NewHandler() *Handler {
 	opts := []grpc.DialOption{grpc.WithInsecure(), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(12582912))}
+
 	catalogConn, err := grpc.Dial("127.0.0.1:1445", opts...)
 	if err != nil {
 		panic(err)
@@ -38,29 +39,34 @@ func NewHandler() *Handler {
 	if err != nil {
 		panic(err)
 	}
-	catalogHandler := getCatalogHandler(catalogConn, resourcesConn)
-
 	authConn, err := grpc.Dial("127.0.0.1:1444", opts...)
-	authHandler := getAuthHandler(authConn, catalogConn)
+	if err != nil {
+		panic(err)
+	}
+
+	catalogHandler := getCatalogHandler(catalogConn, resourcesConn, authConn)
+	authHandler := getAuthHandler(authConn, catalogConn, resourcesConn)
 
 	return &Handler{CabaiCatalogHandler: catalogHandler, AuthHandler: authHandler}
 }
 
-func getAuthHandler(conn *grpc.ClientConn, catalogConn *grpc.ClientConn) *auth.AuthHandler {
+func getAuthHandler(conn *grpc.ClientConn, catalogConn *grpc.ClientConn, resourceConn *grpc.ClientConn) *auth.AuthHandler {
 	authConn := authproto.NewMarketplaceAuthClient(conn)
 	catalog := catalogproto.NewMarketplaceCatalogClient(catalogConn)
+	resources := protoresources.NewMarketplaceResourcesClient(resourceConn)
 
 	tokenFetcher := authfetcher.NewTokenFetcher(authConn)
-	userMutator := authmutator.NewUserMutator(authConn, catalog)
+	userMutator := authmutator.NewUserMutator(authConn, catalog, resources)
 	userReader := authfetcher.NewUserReader(authConn)
 	return auth.NewAuthHandler(tokenFetcher, userMutator, userReader)
 }
 
-func getCatalogHandler(catalog, resources *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {
+func getCatalogHandler(catalog, resources, auth *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {
 	catalogConn := catalogproto.NewMarketplaceCatalogClient(catalog)
 	resourcesConn := protoresources.NewMarketplaceResourcesClient(resources)
+	authConn := authproto.NewMarketplaceAuthClient(auth)
 
-	productReader := grpcfetcher.NewProductReader(catalogConn)
+	productReader := grpcfetcher.NewProductReader(catalogConn, authConn)
 	productWriter := grpcmutator.NewProductWriter(catalogConn, resourcesConn)
 	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter)
 	return catalogHandler

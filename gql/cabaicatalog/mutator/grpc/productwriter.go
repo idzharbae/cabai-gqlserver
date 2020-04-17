@@ -59,6 +59,7 @@ func (pr *ProductWriter) CreateProduct(ctx context.Context, req requests.CreateP
 		Slug:        req.SlugName,
 		PhotoUrl:    photoURL,
 		Description: req.Description,
+		Category:    req.Category,
 	})
 	if err != nil {
 		return nil, err

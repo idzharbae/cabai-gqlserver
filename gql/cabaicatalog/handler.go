@@ -20,10 +20,21 @@ func NewCabaiCatalogHandler(productReader fetcher.ProductReader, productWriter m
 	}
 }
 
-func (r *CabaiCatalogHandler) Products(ctx context.Context, args struct {
+func (r *CabaiCatalogHandler) SearchProducts(ctx context.Context, args struct {
 	Params requests.ListProduct
 }) (*[]*resolver.Product, error) {
-	res, err := r.productReader.List(ctx, args.Params)
+	res, err := r.productReader.Search(ctx, args.Params)
+	if err != nil {
+		return nil, err
+	}
+	products := resolver.NewProducts(res)
+	return &products, nil
+}
+
+func (r *CabaiCatalogHandler) ProductsByShop(ctx context.Context, args struct {
+	Params requests.ProductsByShop
+}) (*[]*resolver.Product, error) {
+	res, err := r.productReader.GetByShopID(ctx, args.Params)
 	if err != nil {
 		return nil, err
 	}

@@ -57,6 +57,16 @@ func (ah *AuthHandler) Register(ctx context.Context, args struct {
 	return resolver.NewUser(user), nil
 }
 
+func (ah *AuthHandler) EditProfile(ctx context.Context, args struct {
+	Params requests.EditProfile
+}) (*resolver.User, error) {
+	user, err := ah.userWriter.EditProfile(ctx, args.Params)
+	if err != nil {
+		return nil, err
+	}
+	return resolver.NewUser(user), nil
+}
+
 func (ah *AuthHandler) GetUserInfo(ctx context.Context, args struct {
 	Token *string
 }) (*resolver.User, error) {

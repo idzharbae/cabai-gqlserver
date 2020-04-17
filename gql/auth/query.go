@@ -8,6 +8,7 @@ const (
 	`
 	Mutation = `
 		register(params: RegisterInput!): User
+		editProfile(params: EditProfileInput!): User
 `
 	Types = `
 		type Success{
@@ -50,8 +51,19 @@ const (
 			province: String = ""
 			addressDetail: String = ""
 			zipCode: Int = 0
-			photoURL: String = ""
 			description: String = ""
+		}
+		input EditProfileInput {
+			password: String!
+			newPassword: String = ""
+			phoneNumber: String!
+			fullName: String!
+			city: String = ""
+			province: String = ""
+			addressDetail: String = ""
+			zipCode: Int = 0
+			description: String = ""
+			photo: Upload
 		}
 `
 )
