@@ -49,12 +49,12 @@ func (ah *AuthHandler) RefreshToken(ctx context.Context, args struct {
 
 func (ah *AuthHandler) Register(ctx context.Context, args struct {
 	Params requests.Register
-}) (*resolver.Success, error) {
-	err := ah.userWriter.Register(ctx, args.Params)
+}) (*resolver.User, error) {
+	user, err := ah.userWriter.Register(ctx, args.Params)
 	if err != nil {
 		return nil, err
 	}
-	return &resolver.Success{}, nil
+	return resolver.NewUser(user), nil
 }
 
 func (ah *AuthHandler) GetUserInfo(ctx context.Context, args struct {
@@ -83,6 +83,5 @@ func (ah *AuthHandler) GetUserInfo(ctx context.Context, args struct {
 	if err != nil || user == nil {
 		return nil, err
 	}
-	userFromToken.PhotoURL = user.PhotoURL
-	return resolver.NewUser(&userFromToken), nil
+	return resolver.NewUser(user), nil
 }
