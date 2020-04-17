@@ -69,3 +69,7 @@ func (p *Product) PhotoURL() string {
 func (p *Product) Description() string {
 	return p.Data.Description
 }
+
+func (p *Product) Category() string {
+	return p.Data.Category
+}

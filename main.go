@@ -44,7 +44,7 @@ func NewHandler() *Handler {
 		panic(err)
 	}
 
-	catalogHandler := getCatalogHandler(catalogConn, resourcesConn)
+	catalogHandler := getCatalogHandler(catalogConn, resourcesConn, authConn)
 	authHandler := getAuthHandler(authConn, catalogConn, resourcesConn)
 
 	return &Handler{CabaiCatalogHandler: catalogHandler, AuthHandler: authHandler}
@@ -61,11 +61,12 @@ func getAuthHandler(conn *grpc.ClientConn, catalogConn *grpc.ClientConn, resourc
 	return auth.NewAuthHandler(tokenFetcher, userMutator, userReader)
 }
 
-func getCatalogHandler(catalog, resources *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {
+func getCatalogHandler(catalog, resources, auth *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {
 	catalogConn := catalogproto.NewMarketplaceCatalogClient(catalog)
 	resourcesConn := protoresources.NewMarketplaceResourcesClient(resources)
+	authConn := authproto.NewMarketplaceAuthClient(auth)
 
-	productReader := grpcfetcher.NewProductReader(catalogConn)
+	productReader := grpcfetcher.NewProductReader(catalogConn, authConn)
 	productWriter := grpcmutator.NewProductWriter(catalogConn, resourcesConn)
 	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter)
 	return catalogHandler

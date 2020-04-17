@@ -3,7 +3,8 @@ package cabaicatalog
 const (
 	Query = `
 		# List Cabai Products
-		products(params: ListProductInput!): [Product]
+		searchProducts(params: ListProductInput!): [Product]
+		productsByShop(params: ProductsByShopInput!): [Product]
 		product(params: GetProductInput!): Product
 	`
 	Mutation = `
@@ -31,9 +32,9 @@ const (
 			createdAt: String!
 			updatedAt: String!
 			description: String!
+			category: String!
 		}
 		input ListProductInput{
-			shopID: Int = 0
 			category: String = ""
 			search: String = ""
 			province: String = ""
@@ -41,6 +42,9 @@ const (
 			orderType: String = ""
 			page: Int = 1
 			limit: Int = 10
+		}
+		input ProductsByShopInput{	
+			shopID: Int!
 		}
 		input GetProductInput{
 			id: ID = 0
@@ -55,6 +59,7 @@ const (
 			slugName: String!
 			photo: Upload
 			description: String!
+			category: String!
 		}
 		input UpdateProductInput {
 			id: Int!

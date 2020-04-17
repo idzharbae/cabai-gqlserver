@@ -55,7 +55,7 @@ const (
 		}
 		input EditProfileInput {
 			password: String!
-			newPassword: String!
+			newPassword: String = ""
 			phoneNumber: String!
 			fullName: String!
 			city: String = ""

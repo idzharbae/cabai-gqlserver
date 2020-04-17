@@ -18,6 +18,7 @@ type Product struct {
 	CreatedAt   string
 	UpdatedAt   string
 	Description string
+	Category    string
 }
 
 func ProductsFromProtos(protos []*catalogproto.Product) []*Product {
@@ -42,5 +43,6 @@ func ProductFromProto(proto *catalogproto.Product) *Product {
 		CreatedAt:   time.Unix(proto.GetCreatedAt(), 0).Format(time.RFC3339),
 		UpdatedAt:   time.Unix(proto.GetUpdatedAt(), 0).Format(time.RFC3339),
 		Description: proto.GetDescription(),
+		Category:    proto.GetCategory(),
 	}
 }
