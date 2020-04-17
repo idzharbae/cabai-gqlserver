@@ -7,7 +7,7 @@ const (
 		getUserInfo(token: String): User
 	`
 	Mutation = `
-		register(params: RegisterInput!): Success
+		register(params: RegisterInput!): User
 `
 	Types = `
 		type Success{
@@ -24,6 +24,13 @@ const (
 			phone: String!
 			type: Int!
 			photoURL: String!
+			city: String!
+			province: String!
+			zipCode: Int!
+			addressDetail: String!
+			description: String!
+			createdAt: String!
+			updatedAt: String!
 		}
 		input LoginInput{
 			userNameOrEmail: String!
@@ -39,7 +46,12 @@ const (
 			phoneNumber: String!
 			fullName: String!
 			role: Int!
-			address: String
+			city: String = ""
+			province: String = ""
+			addressDetail: String = ""
+			zipCode: Int = 0
+			photoURL: String = ""
+			description: String = ""
 		}
 `
 )

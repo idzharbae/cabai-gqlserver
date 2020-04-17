@@ -6,17 +6,25 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/globalconstant"
 	"github.com/idzharbae/marketplace-backend/svc/auth/authproto"
 	"strconv"
+	"time"
 )
 
 type User struct {
-	ID       string
-	Name     string
-	UserName string
-	Email    string
-	Phone    string
-	Password string
-	Type     int32
-	PhotoURL string
+	ID            string
+	Name          string
+	UserName      string
+	Email         string
+	Phone         string
+	Password      string
+	Type          int32
+	PhotoURL      string
+	City          string
+	Province      string
+	AddressDetail string
+	ZipCode       int32
+	Description   string
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
 }
 
 func UserFromToken(token string) (User, error) {
@@ -49,14 +57,21 @@ func UserFromToken(token string) (User, error) {
 
 func UserFromProto(in *authproto.User) *User {
 	return &User{
-		ID:       strconv.Itoa(int(in.GetId())),
-		Name:     in.GetName(),
-		UserName: in.GetUserName(),
-		Email:    in.GetEmail(),
-		Phone:    in.GetPhone(),
-		Password: in.GetPassword(),
-		Type:     in.GetType(),
-		PhotoURL: in.GetPhotoUrl(),
+		ID:            strconv.Itoa(int(in.GetId())),
+		Name:          in.GetName(),
+		UserName:      in.GetUserName(),
+		Email:         in.GetEmail(),
+		Phone:         in.GetPhone(),
+		Password:      in.GetPassword(),
+		Type:          in.GetType(),
+		PhotoURL:      in.GetPhotoUrl(),
+		City:          in.GetCity(),
+		Province:      in.GetProvince(),
+		ZipCode:       in.GetZipCode(),
+		AddressDetail: in.GetAddressDetail(),
+		Description:   in.GetDescription(),
+		CreatedAt:     time.Unix(in.GetCreatedAt(), 0),
+		UpdatedAt:     time.Unix(in.GetUpdatedAt(), 0),
 	}
 }
 
