@@ -18,7 +18,7 @@ func NewProductReader(conn connection.CatalogConnection) *ProductReader {
 
 func (pr *ProductReader) List(ctx context.Context, req requests.ListProduct) ([]*data.Product, error) {
 	res, err := pr.conn.ListProducts(context.Background(), &catalogproto.ListProductsReq{
-		ShopID: req.ShopID,
+		ShopIDs: []int64{int64(req.ShopID)},
 		Pagination: &catalogproto.Pagination{
 			Page:  req.Page,
 			Limit: req.Limit,

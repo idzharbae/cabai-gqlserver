@@ -3,9 +3,14 @@ package requests
 import upload "github.com/smithaitufe/go-graphql-upload"
 
 type ListProduct struct {
-	ShopID int32
-	Page   int32
-	Limit  int32
+	ShopID    int32
+	Province  string
+	Search    string
+	Category  string
+	OrderBy   string
+	OrderType string
+	Page      int32
+	Limit     int32
 }
 
 type GetProduct struct {

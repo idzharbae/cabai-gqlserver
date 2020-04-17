@@ -34,6 +34,11 @@ const (
 		}
 		input ListProductInput{
 			shopID: Int = 0
+			category: String = ""
+			search: String = ""
+			province: String = ""
+			orderBy: String = ""
+			orderType: String = ""
 			page: Int = 1
 			limit: Int = 10
 		}
@@ -59,6 +64,7 @@ const (
 			pricePerKG: Int!
 			stockKG: Float!
 			slugName: String!
+			description: String!
 			photo: Upload
 		}
 `
