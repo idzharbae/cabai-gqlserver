@@ -71,6 +71,7 @@ const (
 			slugName: String!
 			description: String!
 			photo: Upload
+			category: String!
 		}
 `
 )
