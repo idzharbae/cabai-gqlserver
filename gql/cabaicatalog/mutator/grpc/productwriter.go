@@ -102,6 +102,7 @@ func (pr *ProductWriter) UpdateProduct(ctx context.Context, req requests.UpdateP
 		Slug:        req.SlugName,
 		PhotoUrl:    photoURL,
 		Description: req.Description,
+		Category:    req.Category,
 	})
 	if err != nil {
 		return nil, err
