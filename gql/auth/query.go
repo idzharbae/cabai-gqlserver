@@ -5,6 +5,7 @@ const (
 		login(params: LoginInput!): Token
 		refreshToken(params: RefreshTokenInput!): Token
 		getUserInfo(token: String): User
+		getUserByID(userID: Int!): User
 	`
 	Mutation = `
 		register(params: RegisterInput!): User

@@ -95,3 +95,15 @@ func (ah *AuthHandler) GetUserInfo(ctx context.Context, args struct {
 	}
 	return resolver.NewUser(user), nil
 }
+
+func (ah *AuthHandler) GetUserByID(ctx context.Context, args struct {
+	UserID int32
+}) (*resolver.User, error) {
+	user, err := ah.userReader.GetUser(ctx, &authproto.GetUserReq{
+		Id: int64(args.UserID),
+	})
+	if err != nil || user == nil {
+		return nil, err
+	}
+	return resolver.NewUser(user), nil
+}
