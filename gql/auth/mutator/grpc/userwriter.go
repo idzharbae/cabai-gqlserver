@@ -37,6 +37,7 @@ func (um *UserMutator) Register(ctx context.Context, req requests.Register) (*da
 		Province:      req.Province,
 		AddressDetail: req.AddressDetail,
 		ZipCode:       req.ZipCode,
+		Description:   req.Description,
 	})
 	if err != nil {
 		return nil, err
@@ -81,6 +82,7 @@ func (um *UserMutator) EditProfile(ctx context.Context, req requests.EditProfile
 		PhotoUrl:      photoURL,
 		AddressDetail: req.AddressDetail,
 		ZipCode:       req.ZipCode,
+		Description:   req.Description,
 	})
 
 	if err != nil {
