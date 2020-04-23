@@ -8,4 +8,5 @@ import (
 type CartWriter interface {
 	CreateCart(req request.CreateCart) (*data.Cart, error)
 	UpdateCart(req request.UpdateCart) (*data.Cart, error)
+	DeleteCart(cartID, userID int64) error
 }

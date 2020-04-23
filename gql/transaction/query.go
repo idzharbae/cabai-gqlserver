@@ -8,6 +8,7 @@ const (
 	Mutation = `
 		createCart(params: CreateCartInput!): Cart
 		updateCartQuantity(params: UpdateCartInput!): Cart
+		deleteCart(cartID: Int!): Success
 `
 	Types = `
 		type Cart{

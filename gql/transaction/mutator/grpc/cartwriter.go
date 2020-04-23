@@ -39,3 +39,11 @@ func (cw *CartWriter) UpdateCart(req request.UpdateCart) (*data.Cart, error) {
 	}
 	return data.CartFromProto(res), nil
 }
+
+func (cw *CartWriter) DeleteCart(cartID, userID int64) error {
+	_, err := cw.conn.RemoveCart(context.Background(), &prototransaction.RemoveCartReq{
+		Id:     cartID,
+		UserId: userID,
+	})
+	return err
+}
