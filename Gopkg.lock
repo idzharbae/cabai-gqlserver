@@ -47,16 +47,17 @@
   revision = "dae41bde9ef91c12e78863f0299348612f2d6214"
 
 [[projects]]
-  digest = "1:73e060a2930e3011430eb8155a007a075c35b2adb1727f00df365636902eda34"
+  digest = "1:6df63f8a50c7d1999277731277264429beab3873984bd65db099f0c66d5bdbd7"
   name = "github.com/idzharbae/marketplace-backend"
   packages = [
     "svc/auth/authproto",
     "svc/catalog/catalogproto",
     "svc/resources/protoresources",
+    "svc/transaction/prototransaction",
   ]
   pruneopts = "UT"
-  revision = "386e3aff9e2a4c6fd88a89e00cb2928610ac5694"
-  version = "proto_v5.8"
+  revision = "9b2cf79f179ad6b7afd85309649223fb6dff8ea6"
+  version = "proto_v6.1"
 
 [[projects]]
   digest = "1:11e62d6050198055e6cd87ed57e5d8c669e84f839c16e16f192374d913d1a70d"
@@ -191,6 +192,7 @@
     "github.com/idzharbae/marketplace-backend/svc/auth/authproto",
     "github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto",
     "github.com/idzharbae/marketplace-backend/svc/resources/protoresources",
+    "github.com/idzharbae/marketplace-backend/svc/transaction/prototransaction",
     "github.com/smithaitufe/go-graphql-upload",
     "google.golang.org/grpc",
   ]
