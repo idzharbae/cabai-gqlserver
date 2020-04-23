@@ -15,8 +15,8 @@ func NewCartReader(conn connection.TransactionConnection) *CartReader {
 	return &CartReader{conn: conn}
 }
 
-func (cr *CartReader) ListByUserID(ctx context.Context, userID int64) ([]*data.Cart, error) {
-	res, err := cr.conn.ListCartItems(ctx, &prototransaction.ListCartItemsReq{
+func (cr *CartReader) ListByUserID(userID int64) ([]*data.Cart, error) {
+	res, err := cr.conn.ListCartItems(context.Background(), &prototransaction.ListCartItemsReq{
 		UserId: userID,
 	})
 	if err != nil {

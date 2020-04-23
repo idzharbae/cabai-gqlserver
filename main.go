@@ -10,6 +10,7 @@ import (
 	grpcmutator "github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/mutator/grpc"
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction"
 	transactionfetcher "github.com/idzharbae/cabai-gqlserver/gql/transaction/fetcher/grpc"
+	transactionmutator "github.com/idzharbae/cabai-gqlserver/gql/transaction/mutator/grpc"
 	"github.com/idzharbae/cabai-gqlserver/middleware"
 	"github.com/idzharbae/marketplace-backend/svc/auth/authproto"
 	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
@@ -62,7 +63,8 @@ func NewHandler() *Handler {
 func getTransactionHandler(conn *grpc.ClientConn) *transaction.TransactionHandler {
 	transactionConn := prototransaction.NewMarketplaceTransactionClient(conn)
 	cartReader := transactionfetcher.NewCartReader(transactionConn)
-	return transaction.NewTransactionHandler(cartReader)
+	cartWriter := transactionmutator.NewCartWriter(transactionConn)
+	return transaction.NewTransactionHandler(cartReader, cartWriter)
 }
 
 func getAuthHandler(conn *grpc.ClientConn, catalogConn *grpc.ClientConn, resourceConn *grpc.ClientConn) *auth.AuthHandler {
