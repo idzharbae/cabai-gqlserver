@@ -10,3 +10,7 @@ type CartWriter interface {
 	UpdateCart(req request.UpdateCart) (*data.Cart, error)
 	DeleteCart(cartID, userID int64) error
 }
+
+type OrderWriter interface {
+	Checkout(req request.CheckoutReq) ([]*data.Order, error)
+}

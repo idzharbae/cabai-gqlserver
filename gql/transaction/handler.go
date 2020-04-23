@@ -7,15 +7,18 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction/request"
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction/resolver"
 	"github.com/idzharbae/cabai-gqlserver/util"
+	"strconv"
 )
 
 type TransactionHandler struct {
-	cartReader fetcher.CartReader
-	cartWriter mutator.CartWriter
+	cartReader  fetcher.CartReader
+	cartWriter  mutator.CartWriter
+	orderWriter mutator.OrderWriter
 }
 
-func NewTransactionHandler(cartReader fetcher.CartReader, cartWriter mutator.CartWriter) *TransactionHandler {
-	return &TransactionHandler{cartReader: cartReader, cartWriter: cartWriter}
+func NewTransactionHandler(cartReader fetcher.CartReader, cartWriter mutator.CartWriter,
+	orderWriter mutator.OrderWriter) *TransactionHandler {
+	return &TransactionHandler{cartReader: cartReader, cartWriter: cartWriter, orderWriter: orderWriter}
 }
 
 func (h *TransactionHandler) Carts(ctx context.Context, args struct {
@@ -69,6 +72,7 @@ func (h *TransactionHandler) UpdateCartQuantity(ctx context.Context, args struct
 	}
 	return resolver.NewCart(cart), nil
 }
+
 func (h *TransactionHandler) DeleteCart(ctx context.Context, args struct {
 	CartID int32
 }) (*resolver.Success, error) {
@@ -81,6 +85,22 @@ func (h *TransactionHandler) DeleteCart(ctx context.Context, args struct {
 		return nil, err
 	}
 	return &resolver.Success{}, nil
+}
+
+func (h *TransactionHandler) Checkout(ctx context.Context, args struct {
+	Params request.CheckoutReq
+}) (*[]*resolver.Order, error) {
+	userID, err := h.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+	args.Params.UserID = strconv.FormatInt(userID, 10)
+	res, err := h.orderWriter.Checkout(args.Params)
+	if err != nil {
+		return nil, err
+	}
+	orders := resolver.NewOrders(res)
+	return &orders, nil
 }
 
 func (h *TransactionHandler) getUserID(token string, ctx context.Context) (int64, error) {
