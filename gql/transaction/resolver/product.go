@@ -2,7 +2,8 @@ package resolver
 
 import (
 	"github.com/graph-gophers/graphql-go"
-	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/data"
+	"github.com/idzharbae/cabai-gqlserver/gql/transaction/data"
+	"strconv"
 )
 
 type Product struct {
@@ -31,45 +32,41 @@ func (p *Product) ID() graphql.ID {
 }
 
 func (p *Product) ShopID() int32 {
-	return p.Data.ShopID
+	return int32(p.Data.ShopID)
 }
-
 func (p *Product) Name() string {
 	return p.Data.Name
 }
-
-func (p *Product) Quantity() int32 {
-	return p.Data.Quantity
+func (p *Product) AmountKG() float64 {
+	return p.Data.AmountKG
 }
-
 func (p *Product) PricePerKG() int32 {
 	return p.Data.PricePerKG
 }
-
-func (p *Product) StockKG() float64 {
-	return p.Data.StockKG
+func (p *Product) TotalPrice() string {
+	return strconv.FormatInt(p.Data.TotalPrice, 10)
 }
-
-func (p *Product) CreatedAt() string {
-	return p.Data.CreatedAt
-}
-
-func (p *Product) UpdatedAt() string {
-	return p.Data.UpdatedAt
-}
-
-func (p *Product) SlugName() string {
-	return p.Data.SlugName
-}
-
 func (p *Product) PhotoURL() string {
 	return p.Data.PhotoURL
 }
-
-func (p *Product) Description() string {
-	return p.Data.Description
+func (p *Product) Quantity() int32 {
+	return 0
 }
-
+func (p *Product) StockKG() float64 {
+	return 0
+}
+func (p *Product) SlugName() string {
+	return ""
+}
+func (p *Product) CreatedAt() string {
+	return ""
+}
+func (p *Product) UpdatedAt() string {
+	return ""
+}
+func (p *Product) Description() string {
+	return ""
+}
 func (p *Product) Category() string {
-	return p.Data.Category
+	return ""
 }

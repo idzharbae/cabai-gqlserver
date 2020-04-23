@@ -8,10 +8,13 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/fetcher/grpc"
 	grpcmutator "github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/mutator/grpc"
+	"github.com/idzharbae/cabai-gqlserver/gql/transaction"
+	transactionfetcher "github.com/idzharbae/cabai-gqlserver/gql/transaction/fetcher/grpc"
 	"github.com/idzharbae/cabai-gqlserver/middleware"
 	"github.com/idzharbae/marketplace-backend/svc/auth/authproto"
 	"github.com/idzharbae/marketplace-backend/svc/catalog/catalogproto"
 	"github.com/idzharbae/marketplace-backend/svc/resources/protoresources"
+	"github.com/idzharbae/marketplace-backend/svc/transaction/prototransaction"
 	upload "github.com/smithaitufe/go-graphql-upload"
 	"google.golang.org/grpc"
 	"log"
@@ -26,6 +29,7 @@ var schema *graphql.Schema
 type Handler struct {
 	*cabaicatalog.CabaiCatalogHandler
 	*auth.AuthHandler
+	*transaction.TransactionHandler
 }
 
 func NewHandler() *Handler {
@@ -43,11 +47,22 @@ func NewHandler() *Handler {
 	if err != nil {
 		panic(err)
 	}
+	transactionConn, err := grpc.Dial("127.0.0.1:1446", opts...)
+	if err != nil {
+		panic(err)
+	}
 
 	catalogHandler := getCatalogHandler(catalogConn, resourcesConn, authConn)
 	authHandler := getAuthHandler(authConn, catalogConn, resourcesConn)
+	transactionHandler := getTransactionHandler(transactionConn)
 
-	return &Handler{CabaiCatalogHandler: catalogHandler, AuthHandler: authHandler}
+	return &Handler{CabaiCatalogHandler: catalogHandler, AuthHandler: authHandler, TransactionHandler: transactionHandler}
+}
+
+func getTransactionHandler(conn *grpc.ClientConn) *transaction.TransactionHandler {
+	transactionConn := prototransaction.NewMarketplaceTransactionClient(conn)
+	cartReader := transactionfetcher.NewCartReader(transactionConn)
+	return transaction.NewTransactionHandler(cartReader)
 }
 
 func getAuthHandler(conn *grpc.ClientConn, catalogConn *grpc.ClientConn, resourceConn *grpc.ClientConn) *auth.AuthHandler {
@@ -82,14 +97,16 @@ func NewSchemaSring() string {
 		type Query{
 			%s
 			%s
+			%s
 		}
 		type Mutation{
 			%s
 			%s
+			%s
 		}
-	`, cabaicatalog.Query, auth.Query,
-		cabaicatalog.Mutation, auth.Mutation)
-	types := cabaicatalog.Types + auth.Types
+	`, cabaicatalog.Query, auth.Query, transaction.Query,
+		cabaicatalog.Mutation, auth.Mutation, transaction.Mutation)
+	types := cabaicatalog.Types + auth.Types + transaction.Types
 	return schemaString + types
 }
 
