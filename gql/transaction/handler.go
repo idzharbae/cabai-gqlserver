@@ -12,13 +12,14 @@ import (
 
 type TransactionHandler struct {
 	cartReader  fetcher.CartReader
+	orderReader fetcher.OrderReader
 	cartWriter  mutator.CartWriter
 	orderWriter mutator.OrderWriter
 }
 
 func NewTransactionHandler(cartReader fetcher.CartReader, cartWriter mutator.CartWriter,
-	orderWriter mutator.OrderWriter) *TransactionHandler {
-	return &TransactionHandler{cartReader: cartReader, cartWriter: cartWriter, orderWriter: orderWriter}
+	orderWriter mutator.OrderWriter, orderReader fetcher.OrderReader) *TransactionHandler {
+	return &TransactionHandler{cartReader: cartReader, cartWriter: cartWriter, orderWriter: orderWriter, orderReader: orderReader}
 }
 
 func (h *TransactionHandler) Carts(ctx context.Context, args struct {
@@ -96,6 +97,36 @@ func (h *TransactionHandler) Checkout(ctx context.Context, args struct {
 	}
 	args.Params.UserID = strconv.FormatInt(userID, 10)
 	res, err := h.orderWriter.Checkout(args.Params)
+	if err != nil {
+		return nil, err
+	}
+	orders := resolver.NewOrders(res)
+	return &orders, nil
+}
+func (h *TransactionHandler) CustomerOrders(ctx context.Context, args struct {
+	Token string
+}) (*[]*resolver.Order, error) {
+	userID, err := h.getUserID(args.Token, ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := h.orderReader.CustomerOrders(userID)
+	if err != nil {
+		return nil, err
+	}
+	orders := resolver.NewOrders(res)
+	return &orders, nil
+}
+func (h *TransactionHandler) ShopOrders(ctx context.Context, args struct {
+	Token string
+}) (*[]*resolver.Order, error) {
+	userID, err := h.getUserID(args.Token, ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := h.orderReader.ShopOrders(userID)
 	if err != nil {
 		return nil, err
 	}

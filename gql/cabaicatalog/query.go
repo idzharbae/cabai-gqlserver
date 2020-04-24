@@ -33,6 +33,7 @@ const (
 			updatedAt: String!
 			description: String!
 			category: String!
+			boughtKG: Float!
 		}
 		input ListProductInput{
 			category: String = ""
