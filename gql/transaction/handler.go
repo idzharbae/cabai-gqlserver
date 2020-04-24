@@ -133,6 +133,21 @@ func (h *TransactionHandler) ShopOrders(ctx context.Context, args struct {
 	orders := resolver.NewOrders(res)
 	return &orders, nil
 }
+func (h *TransactionHandler) ShipOrder(ctx context.Context, args struct {
+	OrderID int32
+}) (*resolver.Order, error) {
+	userID, err := h.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := h.orderWriter.ShipOrder(int64(args.OrderID), userID)
+	if err != nil {
+		return nil, err
+	}
+	order := resolver.NewOrder(res)
+	return order, nil
+}
 
 func (h *TransactionHandler) getUserID(token string, ctx context.Context) (int64, error) {
 	var userID int64

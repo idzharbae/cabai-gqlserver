@@ -13,6 +13,7 @@ const (
 		deleteCart(cartID: Int!): Success
 		
 		checkout(params: CheckoutInput!): [Order]
+		shipOrder(orderID: Int!): Order
 `
 	Types = `
 		type Cart{
@@ -27,7 +28,7 @@ const (
 			shopID: ID!
 			totalPrice: String!
 			products: [Product]
-			status: Int!
+			status: String!
 			payment: Payment
 		}
 		type Payment{

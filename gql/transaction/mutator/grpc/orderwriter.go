@@ -38,7 +38,18 @@ func (ow *OrderWriter) Checkout(req request.CheckoutReq) ([]*data.Order, error) 
 	if err != nil {
 		return nil, err
 	}
-	return data.OrdersFromProtos(res.Orders), nil
+	return data.OrdersFromProtos(res.GetOrders()), nil
+}
+
+func (ow *OrderWriter) ShipOrder(orderID, shopID int64) (*data.Order, error) {
+	res, err := ow.conn.UpdateOrderStatusToOnShipment(context.Background(), &prototransaction.ShipProductReq{
+		OrderId: orderID,
+		ShopId:  shopID,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return data.OrderFromProto(res.GetOrder()), nil
 }
 
 func stringSliceToIntSlice(s []string) ([]int64, error) {

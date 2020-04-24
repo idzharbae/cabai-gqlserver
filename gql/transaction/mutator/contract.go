@@ -13,4 +13,5 @@ type CartWriter interface {
 
 type OrderWriter interface {
 	Checkout(req request.CheckoutReq) ([]*data.Order, error)
+	ShipOrder(orderID, shopID int64) (*data.Order, error)
 }

@@ -3,6 +3,7 @@ package resolver
 import (
 	"github.com/graph-gophers/graphql-go"
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction/data"
+	"github.com/idzharbae/cabai-gqlserver/gql/transaction/enum"
 )
 
 type Order struct {
@@ -37,8 +38,16 @@ func (o *Order) ShopID() graphql.ID {
 func (o *Order) TotalPrice() string {
 	return o.Data.TotalPrice
 }
-func (o *Order) Status() int32 {
-	return o.Data.Status
+func (o *Order) Status() string {
+	switch o.Data.Status {
+	case enum.OrderStatusFulfilledCode:
+		return enum.OrderStatusFulfilledString
+	case enum.OrderStatusWaitingForSellerCode:
+		return enum.OrderStatusWaitingForSellerString
+	case enum.OrderStatusOnShipmentCode:
+		return enum.OrderStatusOnShipmentString
+	}
+	return ""
 }
 func (o *Order) Products() *[]*Product {
 	products := NewProducts(o.Data.Products)
