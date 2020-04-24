@@ -64,7 +64,9 @@ func getTransactionHandler(conn *grpc.ClientConn) *transaction.TransactionHandle
 	transactionConn := prototransaction.NewMarketplaceTransactionClient(conn)
 	cartReader := transactionfetcher.NewCartReader(transactionConn)
 	cartWriter := transactionmutator.NewCartWriter(transactionConn)
-	return transaction.NewTransactionHandler(cartReader, cartWriter)
+	orderWriter := transactionmutator.NewOrderWriter(transactionConn)
+	orderReader := transactionfetcher.NewOrderReader(transactionConn)
+	return transaction.NewTransactionHandler(cartReader, cartWriter, orderWriter, orderReader)
 }
 
 func getAuthHandler(conn *grpc.ClientConn, catalogConn *grpc.ClientConn, resourceConn *grpc.ClientConn) *auth.AuthHandler {
