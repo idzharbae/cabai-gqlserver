@@ -47,7 +47,7 @@
   revision = "dae41bde9ef91c12e78863f0299348612f2d6214"
 
 [[projects]]
-  digest = "1:6df63f8a50c7d1999277731277264429beab3873984bd65db099f0c66d5bdbd7"
+  digest = "1:e996a77861d36e7df59ff14b260d81cfb724cac46c4178fff6b82d0e592a0b33"
   name = "github.com/idzharbae/marketplace-backend"
   packages = [
     "svc/auth/authproto",
@@ -56,8 +56,8 @@
     "svc/transaction/prototransaction",
   ]
   pruneopts = "UT"
-  revision = "9b2cf79f179ad6b7afd85309649223fb6dff8ea6"
-  version = "proto_v6.1"
+  revision = "c359cfdd5c4bd84a0021b0210d1f89bb18cdd3c0"
+  version = "proto_v6.2"
 
 [[projects]]
   digest = "1:11e62d6050198055e6cd87ed57e5d8c669e84f839c16e16f192374d913d1a70d"

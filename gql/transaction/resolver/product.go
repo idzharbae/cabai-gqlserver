@@ -56,7 +56,7 @@ func (p *Product) StockKG() float64 {
 	return 0
 }
 func (p *Product) SlugName() string {
-	return ""
+	return p.Data.Slug
 }
 func (p *Product) CreatedAt() string {
 	return ""

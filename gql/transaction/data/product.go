@@ -13,6 +13,7 @@ type Product struct {
 	PricePerKG int32
 	TotalPrice int64
 	PhotoURL   string
+	Slug       string
 }
 
 func ProductFromProto(proto *prototransaction.Product) *Product {
@@ -24,6 +25,7 @@ func ProductFromProto(proto *prototransaction.Product) *Product {
 		PricePerKG: proto.GetPricePerKg(),
 		TotalPrice: proto.GetTotalPrice(),
 		PhotoURL:   proto.GetPhotoUrl(),
+		Slug:       proto.GetSlug(),
 	}
 }
 
