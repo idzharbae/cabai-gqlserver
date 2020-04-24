@@ -7,15 +7,19 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction/request"
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction/resolver"
 	"github.com/idzharbae/cabai-gqlserver/util"
+	"strconv"
 )
 
 type TransactionHandler struct {
-	cartReader fetcher.CartReader
-	cartWriter mutator.CartWriter
+	cartReader  fetcher.CartReader
+	orderReader fetcher.OrderReader
+	cartWriter  mutator.CartWriter
+	orderWriter mutator.OrderWriter
 }
 
-func NewTransactionHandler(cartReader fetcher.CartReader, cartWriter mutator.CartWriter) *TransactionHandler {
-	return &TransactionHandler{cartReader: cartReader, cartWriter: cartWriter}
+func NewTransactionHandler(cartReader fetcher.CartReader, cartWriter mutator.CartWriter,
+	orderWriter mutator.OrderWriter, orderReader fetcher.OrderReader) *TransactionHandler {
+	return &TransactionHandler{cartReader: cartReader, cartWriter: cartWriter, orderWriter: orderWriter, orderReader: orderReader}
 }
 
 func (h *TransactionHandler) Carts(ctx context.Context, args struct {
@@ -69,6 +73,7 @@ func (h *TransactionHandler) UpdateCartQuantity(ctx context.Context, args struct
 	}
 	return resolver.NewCart(cart), nil
 }
+
 func (h *TransactionHandler) DeleteCart(ctx context.Context, args struct {
 	CartID int32
 }) (*resolver.Success, error) {
@@ -77,6 +82,81 @@ func (h *TransactionHandler) DeleteCart(ctx context.Context, args struct {
 		return nil, err
 	}
 	err = h.cartWriter.DeleteCart(int64(args.CartID), userID)
+	if err != nil {
+		return nil, err
+	}
+	return &resolver.Success{}, nil
+}
+
+func (h *TransactionHandler) Checkout(ctx context.Context, args struct {
+	Params request.CheckoutReq
+}) (*[]*resolver.Order, error) {
+	userID, err := h.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+	args.Params.UserID = strconv.FormatInt(userID, 10)
+	res, err := h.orderWriter.Checkout(args.Params)
+	if err != nil {
+		return nil, err
+	}
+	orders := resolver.NewOrders(res)
+	return &orders, nil
+}
+func (h *TransactionHandler) CustomerOrders(ctx context.Context, args struct {
+	Token string
+}) (*[]*resolver.Order, error) {
+	userID, err := h.getUserID(args.Token, ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := h.orderReader.CustomerOrders(userID)
+	if err != nil {
+		return nil, err
+	}
+	orders := resolver.NewOrders(res)
+	return &orders, nil
+}
+func (h *TransactionHandler) ShopOrders(ctx context.Context, args struct {
+	Token string
+}) (*[]*resolver.Order, error) {
+	userID, err := h.getUserID(args.Token, ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := h.orderReader.ShopOrders(userID)
+	if err != nil {
+		return nil, err
+	}
+	orders := resolver.NewOrders(res)
+	return &orders, nil
+}
+func (h *TransactionHandler) ShipOrder(ctx context.Context, args struct {
+	OrderID int32
+}) (*resolver.Order, error) {
+	userID, err := h.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := h.orderWriter.ShipOrder(int64(args.OrderID), userID)
+	if err != nil {
+		return nil, err
+	}
+	order := resolver.NewOrder(res)
+	return order, nil
+}
+func (h *TransactionHandler) FulfillOrder(ctx context.Context, args struct {
+	OrderID int32
+}) (*resolver.Success, error) {
+	userID, err := h.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = h.orderWriter.FulfillOrder(int64(args.OrderID), userID)
 	if err != nil {
 		return nil, err
 	}

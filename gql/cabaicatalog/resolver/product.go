@@ -73,3 +73,7 @@ func (p *Product) Description() string {
 func (p *Product) Category() string {
 	return p.Data.Category
 }
+
+func (p *Product) BoughtKG() float64 {
+	return 0
+}

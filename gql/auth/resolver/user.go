@@ -68,3 +68,7 @@ func (u *User) CreatedAt() string {
 func (u *User) UpdatedAt() string {
 	return u.Data.UpdatedAt.Format("2006-01-02 15:04:05")
 }
+
+func (u *User) Saldo() string {
+	return u.Data.Saldo
+}

@@ -49,6 +49,9 @@ func (p *Product) TotalPrice() string {
 func (p *Product) PhotoURL() string {
 	return p.Data.PhotoURL
 }
+func (p *Product) BoughtKG() float64 {
+	return p.Data.AmountKG
+}
 func (p *Product) Quantity() int32 {
 	return 0
 }

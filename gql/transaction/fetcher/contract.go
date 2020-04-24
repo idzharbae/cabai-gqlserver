@@ -7,3 +7,8 @@ import (
 type CartReader interface {
 	ListByUserID(userID int64) ([]*data.Cart, error)
 }
+
+type OrderReader interface {
+	CustomerOrders(customerID int64) ([]*data.Order, error)
+	ShopOrders(shopID int64) ([]*data.Order, error)
+}

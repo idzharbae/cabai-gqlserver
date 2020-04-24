@@ -33,6 +33,7 @@ const (
 			description: String!
 			createdAt: String!
 			updatedAt: String!
+			saldo: String!
 		}
 		input LoginInput{
 			userNameOrEmail: String!
