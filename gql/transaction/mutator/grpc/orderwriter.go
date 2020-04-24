@@ -51,6 +51,13 @@ func (ow *OrderWriter) ShipOrder(orderID, shopID int64) (*data.Order, error) {
 	}
 	return data.OrderFromProto(res.GetOrder()), nil
 }
+func (ow *OrderWriter) FulfillOrder(orderID, userID int64) error {
+	_, err := ow.conn.Fulfill(context.Background(), &prototransaction.FulfillReq{
+		OrderId: orderID,
+		UserId:  userID,
+	})
+	return err
+}
 
 func stringSliceToIntSlice(s []string) ([]int64, error) {
 	res := make([]int64, len(s))

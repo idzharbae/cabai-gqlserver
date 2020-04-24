@@ -148,6 +148,20 @@ func (h *TransactionHandler) ShipOrder(ctx context.Context, args struct {
 	order := resolver.NewOrder(res)
 	return order, nil
 }
+func (h *TransactionHandler) FulfillOrder(ctx context.Context, args struct {
+	OrderID int32
+}) (*resolver.Success, error) {
+	userID, err := h.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = h.orderWriter.FulfillOrder(int64(args.OrderID), userID)
+	if err != nil {
+		return nil, err
+	}
+	return &resolver.Success{}, nil
+}
 
 func (h *TransactionHandler) getUserID(token string, ctx context.Context) (int64, error) {
 	var userID int64

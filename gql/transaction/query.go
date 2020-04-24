@@ -14,6 +14,7 @@ const (
 		
 		checkout(params: CheckoutInput!): [Order]
 		shipOrder(orderID: Int!): Order
+		fulfillOrder(orderID: Int!): Success
 `
 	Types = `
 		type Cart{

@@ -25,6 +25,7 @@ type User struct {
 	Description   string
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
+	Saldo         string
 }
 
 func UserFromToken(token string) (User, error) {
@@ -72,6 +73,7 @@ func UserFromProto(in *authproto.User) *User {
 		Description:   in.GetDescription(),
 		CreatedAt:     time.Unix(in.GetCreatedAt(), 0),
 		UpdatedAt:     time.Unix(in.GetUpdatedAt(), 0),
+		Saldo:         strconv.FormatInt(in.GetSaldo(), 10),
 	}
 }
 
