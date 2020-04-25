@@ -2,7 +2,6 @@ package grpc
 
 import (
 	"context"
-
 	"github.com/idzharbae/cabai-gqlserver/gql/auth/connection"
 	"github.com/idzharbae/cabai-gqlserver/gql/auth/data"
 	"github.com/idzharbae/cabai-gqlserver/gql/auth/requests"
@@ -90,6 +89,20 @@ func (um *UserMutator) EditProfile(ctx context.Context, req requests.EditProfile
 	}
 	userData := data.UserFromProto(updatedUser)
 	return userData, nil
+}
+
+func (um *UserMutator) TopupSaldo(userID, amount int64) (*data.User, error) {
+	res, err := um.conn.TopUp(context.Background(), &authproto.TopUpReq{
+		UserId: userID,
+		Amount: amount,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &data.User{
+		ID:    strconv.FormatInt(res.GetUserId(), 10),
+		Saldo: strconv.FormatInt(res.GetSaldo(), 10),
+	}, nil
 }
 
 func (um *UserMutator) getPhoto(ctx context.Context, req *graphqlupload.GraphQLUpload, owner data.User) (data.File, error) {

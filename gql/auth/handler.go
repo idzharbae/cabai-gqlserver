@@ -107,3 +107,20 @@ func (ah *AuthHandler) GetUserByID(ctx context.Context, args struct {
 	}
 	return resolver.NewUser(user), nil
 }
+func (ah *AuthHandler) Topup(ctx context.Context, args struct {
+	Amount string
+}) (*resolver.User, error) {
+	userID, err := util.UserIDFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
+	amount, err := strconv.ParseInt(args.Amount, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	user, err := ah.userWriter.TopupSaldo(userID, amount)
+	if err != nil || user == nil {
+		return nil, err
+	}
+	return resolver.NewUser(user), nil
+}

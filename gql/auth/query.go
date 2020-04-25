@@ -6,6 +6,7 @@ const (
 		refreshToken(params: RefreshTokenInput!): Token
 		getUserInfo(token: String): User
 		getUserByID(userID: Int!): User
+		topup(amount: String!): User
 	`
 	Mutation = `
 		register(params: RegisterInput!): User
