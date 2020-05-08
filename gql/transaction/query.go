@@ -4,8 +4,8 @@ const (
 	Query = `
 		# List Carts
 		carts(token: String = ""): [Cart]
-		customerOrders(token: String = ""): [Order]
-		shopOrders(token: String = ""): [Order]
+		customerOrders(status: String = ""): [Order]
+		shopOrders(status: String = ""): [Order]
 	`
 	Mutation = `
 		createCart(params: CreateCartInput!): Cart
@@ -14,6 +14,7 @@ const (
 		
 		checkout(params: CheckoutInput!): [Order]
 		shipOrder(orderID: Int!): Order
+		rejectOrder(orderID: Int!): Order
 		fulfillOrder(orderID: Int!): Success
 `
 	Types = `

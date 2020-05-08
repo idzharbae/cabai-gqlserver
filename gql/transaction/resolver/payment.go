@@ -4,6 +4,7 @@ import (
 	"github.com/graph-gophers/graphql-go"
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction/data"
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction/enum"
+	"github.com/idzharbae/cabai-gqlserver/util"
 
 	"strconv"
 )
@@ -29,13 +30,7 @@ func (p *Payment) Method() string {
 	return ""
 }
 func (p *Payment) Status() string {
-	switch p.Data.PaymentStatus {
-	case enum.PaymentStatusPaidCode:
-		return enum.PaymentStatusPaidString
-	case enum.PaymentStatusPendingCode:
-		return enum.PaymentStatusPendingString
-	}
-	return ""
+	return util.PaymentCodeToString(int(p.Data.PaymentStatus))
 }
 func (p *Payment) CreatedAt() string {
 	return p.Data.CreatedAt

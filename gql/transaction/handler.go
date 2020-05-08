@@ -104,14 +104,14 @@ func (h *TransactionHandler) Checkout(ctx context.Context, args struct {
 	return &orders, nil
 }
 func (h *TransactionHandler) CustomerOrders(ctx context.Context, args struct {
-	Token string
+	Status string
 }) (*[]*resolver.Order, error) {
-	userID, err := h.getUserID(args.Token, ctx)
+	userID, err := h.getUserID("", ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := h.orderReader.CustomerOrders(userID)
+	res, err := h.orderReader.CustomerOrders(userID, args.Status)
 	if err != nil {
 		return nil, err
 	}
@@ -119,14 +119,14 @@ func (h *TransactionHandler) CustomerOrders(ctx context.Context, args struct {
 	return &orders, nil
 }
 func (h *TransactionHandler) ShopOrders(ctx context.Context, args struct {
-	Token string
+	Status string
 }) (*[]*resolver.Order, error) {
-	userID, err := h.getUserID(args.Token, ctx)
+	userID, err := h.getUserID("", ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := h.orderReader.ShopOrders(userID)
+	res, err := h.orderReader.ShopOrders(userID, args.Status)
 	if err != nil {
 		return nil, err
 	}
@@ -142,6 +142,21 @@ func (h *TransactionHandler) ShipOrder(ctx context.Context, args struct {
 	}
 
 	res, err := h.orderWriter.ShipOrder(int64(args.OrderID), userID)
+	if err != nil {
+		return nil, err
+	}
+	order := resolver.NewOrder(res)
+	return order, nil
+}
+func (h *TransactionHandler) RejectOrder(ctx context.Context, args struct {
+	OrderID int32
+}) (*resolver.Order, error) {
+	userID, err := h.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := h.orderWriter.RejectOrder(int64(args.OrderID), userID)
 	if err != nil {
 		return nil, err
 	}

@@ -56,8 +56,8 @@
     "svc/transaction/prototransaction",
   ]
   pruneopts = "UT"
-  revision = "c359cfdd5c4bd84a0021b0210d1f89bb18cdd3c0"
-  version = "proto_v6.2"
+  revision = "adac05167b651b2a42b709e4040846a42d5f4922"
+  version = "proto_v6.3"
 
 [[projects]]
   digest = "1:11e62d6050198055e6cd87ed57e5d8c669e84f839c16e16f192374d913d1a70d"
