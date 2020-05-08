@@ -51,6 +51,16 @@ func (ow *OrderWriter) ShipOrder(orderID, shopID int64) (*data.Order, error) {
 	}
 	return data.OrderFromProto(res.GetOrder()), nil
 }
+func (ow *OrderWriter) RejectOrder(orderID, shopID int64) (*data.Order, error) {
+	res, err := ow.conn.RejectOrder(context.Background(), &prototransaction.ChangeProductStatusReq{
+		OrderId: orderID,
+		ShopId:  shopID,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return data.OrderFromProto(res), nil
+}
 func (ow *OrderWriter) FulfillOrder(orderID, userID int64) error {
 	_, err := ow.conn.Fulfill(context.Background(), &prototransaction.FulfillReq{
 		OrderId: orderID,
