@@ -42,7 +42,7 @@ func (ow *OrderWriter) Checkout(req request.CheckoutReq) ([]*data.Order, error) 
 }
 
 func (ow *OrderWriter) ShipOrder(orderID, shopID int64) (*data.Order, error) {
-	res, err := ow.conn.UpdateOrderStatusToOnShipment(context.Background(), &prototransaction.ShipProductReq{
+	res, err := ow.conn.UpdateOrderStatusToOnShipment(context.Background(), &prototransaction.ChangeProductStatusReq{
 		OrderId: orderID,
 		ShopId:  shopID,
 	})

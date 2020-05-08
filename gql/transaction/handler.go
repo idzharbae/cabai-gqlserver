@@ -104,14 +104,14 @@ func (h *TransactionHandler) Checkout(ctx context.Context, args struct {
 	return &orders, nil
 }
 func (h *TransactionHandler) CustomerOrders(ctx context.Context, args struct {
-	Token string
+	Status string
 }) (*[]*resolver.Order, error) {
-	userID, err := h.getUserID(args.Token, ctx)
+	userID, err := h.getUserID("", ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := h.orderReader.CustomerOrders(userID)
+	res, err := h.orderReader.CustomerOrders(userID, args.Status)
 	if err != nil {
 		return nil, err
 	}
@@ -119,14 +119,14 @@ func (h *TransactionHandler) CustomerOrders(ctx context.Context, args struct {
 	return &orders, nil
 }
 func (h *TransactionHandler) ShopOrders(ctx context.Context, args struct {
-	Token string
+	Status string
 }) (*[]*resolver.Order, error) {
-	userID, err := h.getUserID(args.Token, ctx)
+	userID, err := h.getUserID("", ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := h.orderReader.ShopOrders(userID)
+	res, err := h.orderReader.ShopOrders(userID, args.Status)
 	if err != nil {
 		return nil, err
 	}

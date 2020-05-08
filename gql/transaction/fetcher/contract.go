@@ -9,6 +9,6 @@ type CartReader interface {
 }
 
 type OrderReader interface {
-	CustomerOrders(customerID int64) ([]*data.Order, error)
-	ShopOrders(shopID int64) ([]*data.Order, error)
+	CustomerOrders(customerID int64, status string) ([]*data.Order, error)
+	ShopOrders(shopID int64, status string) ([]*data.Order, error)
 }
