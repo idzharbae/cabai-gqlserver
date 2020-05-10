@@ -18,7 +18,7 @@ func NewCartReader(conn connection.TransactionConnection) *CartReader {
 
 func (cr *CartReader) ListByUserID(req request.ListCarts) ([]*data.Cart, error) {
 	res, err := cr.conn.ListCartItems(context.Background(), &prototransaction.ListCartItemsReq{
-		UserId: req.UserID,
+		UserId: int64(req.UserID),
 		Pagination: &prototransaction.Pagination{
 			Page:  req.Page,
 			Limit: req.Limit,

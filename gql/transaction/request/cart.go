@@ -11,7 +11,7 @@ type UpdateCart struct {
 	UserId        int64
 }
 type ListCarts struct {
-	UserID int64
+	UserID int32
 	Page   int32
 	Limit  int32
 }

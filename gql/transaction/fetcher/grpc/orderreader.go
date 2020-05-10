@@ -20,7 +20,7 @@ func NewOrderReader(conn connection.TransactionConnection) *OrderReader {
 func (or *OrderReader) CustomerOrders(req request.ListOrder) ([]*data.Order, error) {
 	orderStatusCode := util.OrderStringToCode(req.Status)
 	res, err := or.conn.ListOrder(context.Background(), &prototransaction.ListOrderReq{
-		CustomerId: req.UserID,
+		CustomerId: int64(req.UserID),
 		Status:     int32(orderStatusCode),
 		Pagination: &prototransaction.Pagination{
 			Page:  req.Page,
@@ -35,7 +35,7 @@ func (or *OrderReader) CustomerOrders(req request.ListOrder) ([]*data.Order, err
 func (or *OrderReader) ShopOrders(req request.ListOrder) ([]*data.Order, error) {
 	orderStatusCode := util.OrderStringToCode(req.Status)
 	res, err := or.conn.ListOrder(context.Background(), &prototransaction.ListOrderReq{
-		ShopId: req.UserID,
+		ShopId: int64(req.UserID),
 		Status: int32(orderStatusCode),
 		Pagination: &prototransaction.Pagination{
 			Page:  req.Page,

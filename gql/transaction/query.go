@@ -46,10 +46,12 @@ const (
 			limit: Int = 10
 		}
 		input ListCartInput{
+			userID: Int = 0
 			page: Int = 1
 			limit: Int = 10
 		}
 		input ListOrderInput{
+			userID: Int = 0
 			status: String = ""
 			page: Int = 1
 			limit: Int = 10
