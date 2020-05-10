@@ -2,9 +2,11 @@ package util
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/idzharbae/cabai-gqlserver/globalconstant"
+	"time"
 )
 
 func UserIDFromCtx(ctx context.Context) (int64, error) {
@@ -29,6 +31,10 @@ func UserIDFromToken(token string) (int64, error) {
 		userID := int64(claims["id"].(float64))
 		if err != nil {
 			return 0, err
+		}
+		expiredAt := int64(claims["expr"].(float64))
+		if time.Now().Unix() > expiredAt {
+			return 0, errors.New("token expired")
 		}
 		return userID, nil
 	}
