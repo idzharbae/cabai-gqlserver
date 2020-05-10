@@ -23,14 +23,14 @@ func NewTransactionHandler(cartReader fetcher.CartReader, cartWriter mutator.Car
 }
 
 func (h *TransactionHandler) Carts(ctx context.Context, args struct {
-	Token string
+	Params request.ListCarts
 }) (*[]*resolver.Cart, error) {
-	userID, err := h.getUserID(args.Token, ctx)
+	userID, err := h.getUserID("", ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	res, err := h.cartReader.ListByUserID(userID)
+	args.Params.UserID = int32(userID)
+	res, err := h.cartReader.ListByUserID(args.Params)
 	if err != nil {
 		return nil, err
 	}
@@ -104,14 +104,14 @@ func (h *TransactionHandler) Checkout(ctx context.Context, args struct {
 	return &orders, nil
 }
 func (h *TransactionHandler) CustomerOrders(ctx context.Context, args struct {
-	Status string
+	Params request.ListOrder
 }) (*[]*resolver.Order, error) {
 	userID, err := h.getUserID("", ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	res, err := h.orderReader.CustomerOrders(userID, args.Status)
+	args.Params.UserID = int32(userID)
+	res, err := h.orderReader.CustomerOrders(args.Params)
 	if err != nil {
 		return nil, err
 	}
@@ -119,14 +119,14 @@ func (h *TransactionHandler) CustomerOrders(ctx context.Context, args struct {
 	return &orders, nil
 }
 func (h *TransactionHandler) ShopOrders(ctx context.Context, args struct {
-	Status string
+	Params request.ListOrder
 }) (*[]*resolver.Order, error) {
 	userID, err := h.getUserID("", ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	res, err := h.orderReader.ShopOrders(userID, args.Status)
+	args.Params.UserID = int32(userID)
+	res, err := h.orderReader.ShopOrders(args.Params)
 	if err != nil {
 		return nil, err
 	}

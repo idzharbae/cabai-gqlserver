@@ -10,3 +10,8 @@ type UpdateCart struct {
 	NewQuantityKG float64
 	UserId        int64
 }
+type ListCarts struct {
+	UserID int32
+	Page   int32
+	Limit  int32
+}

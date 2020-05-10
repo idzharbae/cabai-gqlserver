@@ -2,13 +2,14 @@ package fetcher
 
 import (
 	"github.com/idzharbae/cabai-gqlserver/gql/transaction/data"
+	"github.com/idzharbae/cabai-gqlserver/gql/transaction/request"
 )
 
 type CartReader interface {
-	ListByUserID(userID int64) ([]*data.Cart, error)
+	ListByUserID(req request.ListCarts) ([]*data.Cart, error)
 }
 
 type OrderReader interface {
-	CustomerOrders(customerID int64, status string) ([]*data.Order, error)
-	ShopOrders(shopID int64, status string) ([]*data.Order, error)
+	CustomerOrders(req request.ListOrder) ([]*data.Order, error)
+	ShopOrders(req request.ListOrder) ([]*data.Order, error)
 }
