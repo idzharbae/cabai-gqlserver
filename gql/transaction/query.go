@@ -3,9 +3,9 @@ package transaction
 const (
 	Query = `
 		# List Carts
-		carts(token: String = ""): [Cart]
-		customerOrders(status: String = ""): [Order]
-		shopOrders(status: String = ""): [Order]
+		carts(params: ListCartInput!): [Cart]
+		customerOrders(params: ListOrderInput!): [Order]
+		shopOrders(params: ListOrderInput!): [Order]
 	`
 	Mutation = `
 		createCart(params: CreateCartInput!): Cart
@@ -40,6 +40,19 @@ const (
 			method: String!
 			createdAt: String!
 			updatedAt: String!
+		}
+		input ListSaldoHistoryInput{
+			page: Int = 1
+			limit: Int = 10
+		}
+		input ListCartInput{
+			page: Int = 1
+			limit: Int = 10
+		}
+		input ListOrderInput{
+			status: String = ""
+			page: Int = 1
+			limit: Int = 10
 		}
 		input CreateCartInput{
 			productID: Int!

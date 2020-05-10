@@ -5,3 +5,9 @@ type CheckoutReq struct {
 	UserID        string
 	PaymentAmount string
 }
+type ListOrder struct {
+	UserID int64
+	Status string
+	Page   int32
+	Limit  int32
+}

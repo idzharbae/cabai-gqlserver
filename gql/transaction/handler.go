@@ -23,9 +23,9 @@ func NewTransactionHandler(cartReader fetcher.CartReader, cartWriter mutator.Car
 }
 
 func (h *TransactionHandler) Carts(ctx context.Context, args struct {
-	Token string
+	Params request.ListCarts
 }) (*[]*resolver.Cart, error) {
-	userID, err := h.getUserID(args.Token, ctx)
+	userID, err := h.getUserID("", ctx)
 	if err != nil {
 		return nil, err
 	}
