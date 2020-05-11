@@ -15,3 +15,7 @@ type TokenFetcher interface {
 type UserReader interface {
 	GetUser(ctx context.Context, req *authproto.GetUserReq) (*data.User, error)
 }
+
+type SaldoHistoryReader interface {
+	ListSaldoHistory(ctx context.Context, req *authproto.ListSaldoHistoryReq) ([]*data.SaldoHistory, error)
+}
