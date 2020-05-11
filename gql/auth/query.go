@@ -7,12 +7,22 @@ const (
 		getUserInfo(token: String): User
 		getUserByID(userID: Int!): User
 		topup(amount: String!): User
+		saldoHistory(params: SaldoHistoryInput!): [SaldoHistory]
 	`
 	Mutation = `
 		register(params: RegisterInput!): User
 		editProfile(params: EditProfileInput!): User
 `
 	Types = `
+		type SaldoHistory{
+			id: ID!
+			userID: ID!
+			sourceID: ID!
+			description: String!
+			changeAmount: String!
+			createdAt: String!
+			updatedAt: String!
+		}
 		type Success{
 			success: Boolean!
 		}
@@ -35,6 +45,10 @@ const (
 			createdAt: String!
 			updatedAt: String!
 			saldo: String!
+		}
+		input SaldoHistoryInput{
+			page: Int = 1
+			limit: Int = 10
 		}
 		input LoginInput{
 			userNameOrEmail: String!

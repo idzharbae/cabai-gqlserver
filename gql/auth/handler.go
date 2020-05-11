@@ -14,16 +14,19 @@ import (
 )
 
 type AuthHandler struct {
-	tokenFetcher fetcher.TokenFetcher
-	userWriter   mutator.UserWriter
-	userReader   fetcher.UserReader
+	tokenFetcher       fetcher.TokenFetcher
+	userWriter         mutator.UserWriter
+	userReader         fetcher.UserReader
+	saldoHistoryReader fetcher.SaldoHistoryReader
 }
 
-func NewAuthHandler(tokenFetcher fetcher.TokenFetcher, userWriter mutator.UserWriter, userReader fetcher.UserReader) *AuthHandler {
+func NewAuthHandler(tokenFetcher fetcher.TokenFetcher, userWriter mutator.UserWriter, userReader fetcher.UserReader,
+	saldoHistoryReader fetcher.SaldoHistoryReader) *AuthHandler {
 	return &AuthHandler{
-		tokenFetcher: tokenFetcher,
-		userWriter:   userWriter,
-		userReader:   userReader,
+		tokenFetcher:       tokenFetcher,
+		userWriter:         userWriter,
+		userReader:         userReader,
+		saldoHistoryReader: saldoHistoryReader,
 	}
 }
 
@@ -123,4 +126,24 @@ func (ah *AuthHandler) Topup(ctx context.Context, args struct {
 		return nil, err
 	}
 	return resolver.NewUser(user), nil
+}
+func (ah *AuthHandler) SaldoHistory(ctx context.Context, args struct {
+	Params requests.SaldoHistory
+}) (*[]*resolver.SaldoHistory, error) {
+	userID, err := util.UserIDFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
+	histories, err := ah.saldoHistoryReader.ListSaldoHistory(ctx, &authproto.ListSaldoHistoryReq{
+		UserId: userID,
+		Pagination: &authproto.Pagination{
+			Page:  args.Params.Page,
+			Limit: args.Params.Limit,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	saldoHistories := resolver.NewSaldoHistories(histories)
+	return &saldoHistories, nil
 }
