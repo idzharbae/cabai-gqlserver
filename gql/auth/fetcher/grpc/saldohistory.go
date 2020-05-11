@@ -15,8 +15,8 @@ func NewSaldoHistoryReader(conn connection.Connection) *SaldoHistoryReader {
 	return &SaldoHistoryReader{conn: conn}
 }
 
-func (ur *UserReader) ListSaldoHistory(ctx context.Context, req *authproto.ListSaldoHistoryReq) ([]*data.SaldoHistory, error) {
-	got, err := ur.conn.ListSaldoHistory(ctx, req)
+func (sh *SaldoHistoryReader) ListSaldoHistory(ctx context.Context, req *authproto.ListSaldoHistoryReq) ([]*data.SaldoHistory, error) {
+	got, err := sh.conn.ListSaldoHistory(ctx, req)
 	if err != nil {
 		return nil, err
 	}

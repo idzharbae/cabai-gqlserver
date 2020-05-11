@@ -77,7 +77,8 @@ func getAuthHandler(conn *grpc.ClientConn, catalogConn *grpc.ClientConn, resourc
 	tokenFetcher := authfetcher.NewTokenFetcher(authConn)
 	userMutator := authmutator.NewUserMutator(authConn, catalog, resources)
 	userReader := authfetcher.NewUserReader(authConn)
-	return auth.NewAuthHandler(tokenFetcher, userMutator, userReader)
+	saldoHistoryReader := authfetcher.NewSaldoHistoryReader(authConn)
+	return auth.NewAuthHandler(tokenFetcher, userMutator, userReader, saldoHistoryReader)
 }
 
 func getCatalogHandler(catalog, resources, auth *grpc.ClientConn) *cabaicatalog.CabaiCatalogHandler {
