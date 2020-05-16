@@ -23,13 +23,7 @@ func NewReviewWriter(catalog connection.CatalogConnection, resources connection.
 }
 
 func (rw *ReviewWriter) Create(ctx context.Context, req requests.CreateReview) (*data.Review, error) {
-	photoURL := ""
-
-	userID, err := strconv.ParseInt(req.UserID, 10, 64)
-	if err != nil {
-		return nil, err
-	}
-	productID, err := strconv.ParseInt(req.ProductID, 10, 64)
+	userID, productID, err := rw.parseUserIDAndProductID(req.UserID, req.ProductID)
 	if err != nil {
 		return nil, err
 	}
@@ -39,22 +33,9 @@ func (rw *ReviewWriter) Create(ctx context.Context, req requests.CreateReview) (
 	if err != nil {
 		return nil, err
 	}
-
-	if req.Photo != nil {
-		photo, err := rw.getPhoto(ctx, req.Photo, userID)
-		if err != nil {
-			return nil, err
-		}
-
-		uploadRes, err := rw.resources.UploadPhoto(ctx, &protoresources.UploadPhotoReq{
-			File:    photo.Data,
-			FileExt: photo.Extension,
-			OwnerId: photo.OwnerID,
-		})
-		if err != nil {
-			return nil, err
-		}
-		photoURL = uploadRes.GetFileUrl()
+	photoURL, err := rw.getPhotoURL(ctx, req.Photo, userID)
+	if err != nil {
+		return nil, err
 	}
 
 	res, err := rw.catalog.CreateReview(ctx, &catalogproto.Review{
@@ -71,20 +52,17 @@ func (rw *ReviewWriter) Create(ctx context.Context, req requests.CreateReview) (
 	}
 	return data.ReviewFromProto(res), nil
 }
+
 func (rw *ReviewWriter) Update(ctx context.Context, req requests.UpdateReview) (*data.Review, error) {
-	photoURL := ""
 	id, err := strconv.ParseInt(req.ID, 10, 64)
 	if err != nil {
 		return nil, err
 	}
-	userID, err := strconv.ParseInt(req.UserID, 10, 64)
+	userID, productID, err := rw.parseUserIDAndProductID(req.UserID, req.ProductID)
 	if err != nil {
 		return nil, err
 	}
-	productID, err := strconv.ParseInt(req.ProductID, 10, 64)
-	if err != nil {
-		return nil, err
-	}
+
 	product, err := rw.catalog.GetProduct(ctx, &catalogproto.GetProductReq{
 		Id: int32(productID),
 	})
@@ -92,21 +70,9 @@ func (rw *ReviewWriter) Update(ctx context.Context, req requests.UpdateReview) (
 		return nil, err
 	}
 
-	if req.Photo != nil {
-		photo, err := rw.getPhoto(ctx, req.Photo, userID)
-		if err != nil {
-			return nil, err
-		}
-
-		uploadRes, err := rw.resources.UploadPhoto(ctx, &protoresources.UploadPhotoReq{
-			File:    photo.Data,
-			FileExt: photo.Extension,
-			OwnerId: photo.OwnerID,
-		})
-		if err != nil {
-			return nil, err
-		}
-		photoURL = uploadRes.GetFileUrl()
+	photoURL, err := rw.getPhotoURL(ctx, req.Photo, userID)
+	if err != nil {
+		return nil, err
 	}
 
 	res, err := rw.catalog.UpdateReview(ctx, &catalogproto.Review{
@@ -178,4 +144,37 @@ func (rw *ReviewWriter) getPhoto(ctx context.Context, req *graphqlupload.GraphQL
 		Extension: fileExt,
 		OwnerID:   ownerID,
 	}, nil
+}
+
+func (rw *ReviewWriter) parseUserIDAndProductID(userIDstr string, productIDstr string) (int64, int64, error) {
+	userID, err := strconv.ParseInt(userIDstr, 10, 64)
+	if err != nil {
+		return 0, 0, err
+	}
+	productID, err := strconv.ParseInt(productIDstr, 10, 64)
+	if err != nil {
+		return 0, 0, err
+	}
+	return userID, productID, nil
+}
+
+func (rw *ReviewWriter) getPhotoURL(ctx context.Context, photo *graphqlupload.GraphQLUpload, userID int64) (string, error) {
+	photoURL := ""
+	if photo != nil {
+		photo, err := rw.getPhoto(ctx, photo, userID)
+		if err != nil {
+			return "", err
+		}
+
+		uploadRes, err := rw.resources.UploadPhoto(ctx, &protoresources.UploadPhotoReq{
+			File:    photo.Data,
+			FileExt: photo.Extension,
+			OwnerId: photo.OwnerID,
+		})
+		if err != nil {
+			return "", err
+		}
+		photoURL = uploadRes.GetFileUrl()
+	}
+	return photoURL, nil
 }
