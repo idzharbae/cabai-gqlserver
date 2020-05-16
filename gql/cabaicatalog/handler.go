@@ -6,20 +6,24 @@ import (
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/mutator"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/requests"
 	"github.com/idzharbae/cabai-gqlserver/gql/cabaicatalog/resolver"
+	"github.com/idzharbae/cabai-gqlserver/util"
+	"strconv"
 )
 
 type CabaiCatalogHandler struct {
 	productReader fetcher.ProductReader
 	productWriter mutator.ProductWriter
 	reviewReader  fetcher.ReviewReader
+	reviewWriter  mutator.ReviewWriter
 }
 
 func NewCabaiCatalogHandler(productReader fetcher.ProductReader, productWriter mutator.ProductWriter,
-	reviewReader fetcher.ReviewReader) *CabaiCatalogHandler {
+	reviewReader fetcher.ReviewReader, reviewWriter mutator.ReviewWriter) *CabaiCatalogHandler {
 	return &CabaiCatalogHandler{
 		productReader: productReader,
 		productWriter: productWriter,
 		reviewReader:  reviewReader,
+		reviewWriter:  reviewWriter,
 	}
 }
 
@@ -97,4 +101,67 @@ func (r *CabaiCatalogHandler) DeleteProduct(ctx context.Context, args struct {
 		return nil, err
 	}
 	return &resolver.Success{}, nil
+}
+
+func (r *CabaiCatalogHandler) CreateReview(ctx context.Context, args struct {
+	Params requests.CreateReview
+}) (*resolver.Review, error) {
+	userID, err := r.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+	args.Params.UserID = strconv.FormatInt(userID, 10)
+
+	res, err := r.reviewWriter.Create(ctx, args.Params)
+	if err != nil {
+		return nil, err
+	}
+	return resolver.NewReview(res), nil
+}
+
+func (r *CabaiCatalogHandler) UpdateReview(ctx context.Context, args struct {
+	Params requests.UpdateReview
+}) (*resolver.Review, error) {
+	userID, err := r.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+	args.Params.UserID = strconv.FormatInt(userID, 10)
+
+	res, err := r.reviewWriter.Update(ctx, args.Params)
+	if err != nil {
+		return nil, err
+	}
+	return resolver.NewReview(res), nil
+}
+
+func (r *CabaiCatalogHandler) DeleteReview(ctx context.Context, args struct {
+	Params requests.DeleteReview
+}) (*resolver.Success, error) {
+	userID, err := r.getUserID("", ctx)
+	if err != nil {
+		return nil, err
+	}
+	args.Params.UserID = strconv.FormatInt(userID, 10)
+
+	err = r.reviewWriter.Delete(ctx, args.Params)
+	if err != nil {
+		return nil, err
+	}
+	return &resolver.Success{}, nil
+}
+
+func (h *CabaiCatalogHandler) getUserID(token string, ctx context.Context) (int64, error) {
+	var userID int64
+	var err error
+
+	if token != "" {
+		userID, err = util.UserIDFromToken(token)
+	} else {
+		userID, err = util.UserIDFromCtx(ctx)
+	}
+	if err != nil {
+		return 0, err
+	}
+	return userID, nil
 }

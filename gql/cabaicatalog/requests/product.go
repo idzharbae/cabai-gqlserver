@@ -20,6 +20,11 @@ type GetProduct struct {
 	ID       int32
 	SlugName string
 }
+type DeleteProduct struct {
+	ID       int32
+	SlugName string
+	UserID   int32
+}
 
 type CreateProduct struct {
 	ShopID      int32

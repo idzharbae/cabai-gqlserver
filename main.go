@@ -89,7 +89,8 @@ func getCatalogHandler(catalog, resources, auth *grpc.ClientConn) *cabaicatalog.
 	productReader := grpcfetcher.NewProductReader(catalogConn, authConn)
 	productWriter := grpcmutator.NewProductWriter(catalogConn, resourcesConn)
 	reviewReader := grpcfetcher.NewReviewReader(catalogConn)
-	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter, reviewReader)
+	reviewWriter := grpcmutator.NewReviewWriter(catalogConn, resourcesConn)
+	catalogHandler := cabaicatalog.NewCabaiCatalogHandler(productReader, productWriter, reviewReader, reviewWriter)
 	return catalogHandler
 }
 

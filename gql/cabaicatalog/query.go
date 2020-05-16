@@ -16,9 +16,9 @@ const (
 		# delete cabai product
 		deleteProduct(params: GetProductInput!): Success
 		
-		#createReview(params: Review!): Review
-		#updateReview(params: Review!): Review
-		#deleteReview(params: Review!): Review
+		createReview(params: CreateReviewInput!): Review
+		updateReview(params: UpdateReviewInput!): Review
+		deleteReview(params: DeleteReviewInput!): Success
 `
 	Types = `
 		scalar Upload
@@ -94,6 +94,29 @@ const (
 			description: String!
 			photo: Upload
 			category: String!
+		}
+		input CreateReviewInput{
+			userID: String = "0"
+			productID: String = "0"
+			shopID: String = "0"
+			title: String = ""
+			content: String = ""
+			photo: Upload
+			rating: Float = 0.0
+		}
+		input UpdateReviewInput{
+			id: String!
+			userID: String = "0"
+			productID: String = "0"
+			shopID: String = "0"
+			title: String = ""
+			content: String = ""
+			photo: Upload
+			rating: Float = 0.0
+		}
+		input DeleteReviewInput{
+			id: String!
+			userID: String = "0"
 		}
 `
 )
