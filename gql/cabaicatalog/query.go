@@ -6,17 +6,34 @@ const (
 		searchProducts(params: ListProductInput!): [Product]
 		productsByShop(params: ProductsByShopInput!): [Product]
 		product(params: GetProductInput!): Product
+		reviews(params: ListReviewInput!): [Review]
 	`
 	Mutation = `
-	# Create new cabai product
-	createProduct(params: CreateProductInput!): Product
-	# update cabai product
-	updateProduct(params: UpdateProductInput!): Product
-	# delete cabai product
-	deleteProduct(params: GetProductInput!): Success
+		# Create new cabai product
+		createProduct(params: CreateProductInput!): Product
+		# update cabai product
+		updateProduct(params: UpdateProductInput!): Product
+		# delete cabai product
+		deleteProduct(params: GetProductInput!): Success
+		
+		createReview(params: CreateReviewInput!): Review
+		updateReview(params: UpdateReviewInput!): Review
+		deleteReview(params: DeleteReviewInput!): Success
 `
 	Types = `
 		scalar Upload
+		type Review{
+			id: ID!
+			userID: ID!
+			productID: ID!
+			shopID: ID!
+			title: String!
+			content: String!
+			photoURL: String!
+			rating: Float!
+			createdAt: String!
+			updatedAt: String!
+		}
 		type Success{
 			success: Boolean!
 		}
@@ -34,6 +51,10 @@ const (
 			description: String!
 			category: String!
 			boughtKG: Float!
+		}
+		input ListReviewInput{
+			productID: ID = "0"
+			shopID: ID = "0"
 		}
 		input ListProductInput{
 			category: String = ""
@@ -73,6 +94,29 @@ const (
 			description: String!
 			photo: Upload
 			category: String!
+		}
+		input CreateReviewInput{
+			userID: String = "0"
+			productID: String = "0"
+			shopID: String = "0"
+			title: String = ""
+			content: String = ""
+			photo: Upload
+			rating: Float = 0.0
+		}
+		input UpdateReviewInput{
+			id: String!
+			userID: String = "0"
+			productID: String = "0"
+			shopID: String = "0"
+			title: String = ""
+			content: String = ""
+			photo: Upload
+			rating: Float = 0.0
+		}
+		input DeleteReviewInput{
+			id: String!
+			userID: String = "0"
 		}
 `
 )

@@ -11,3 +11,9 @@ type ProductWriter interface {
 	UpdateProduct(ctx context.Context, req requests.UpdateProduct) (*data.Product, error)
 	DeleteProduct(ctx context.Context, req requests.GetProduct) error
 }
+
+type ReviewWriter interface {
+	Create(ctx context.Context, req requests.CreateReview) (*data.Review, error)
+	Update(ctx context.Context, req requests.UpdateReview) (*data.Review, error)
+	Delete(ctx context.Context, req requests.DeleteReview) error
+}
