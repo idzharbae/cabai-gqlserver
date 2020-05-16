@@ -6,17 +6,34 @@ const (
 		searchProducts(params: ListProductInput!): [Product]
 		productsByShop(params: ProductsByShopInput!): [Product]
 		product(params: GetProductInput!): Product
+		reviews(params: ListReviewInput!): [Review]
 	`
 	Mutation = `
-	# Create new cabai product
-	createProduct(params: CreateProductInput!): Product
-	# update cabai product
-	updateProduct(params: UpdateProductInput!): Product
-	# delete cabai product
-	deleteProduct(params: GetProductInput!): Success
+		# Create new cabai product
+		createProduct(params: CreateProductInput!): Product
+		# update cabai product
+		updateProduct(params: UpdateProductInput!): Product
+		# delete cabai product
+		deleteProduct(params: GetProductInput!): Success
+		
+		#createReview(params: Review!): Review
+		#updateReview(params: Review!): Review
+		#deleteReview(params: Review!): Review
 `
 	Types = `
 		scalar Upload
+		type Review{
+			id: ID!
+			userID: ID!
+			productID: ID!
+			shopID: ID!
+			title: String!
+			content: String!
+			photoURL: String!
+			rating: Float!
+			createdAt: String!
+			updatedAt: String!
+		}
 		type Success{
 			success: Boolean!
 		}
@@ -34,6 +51,10 @@ const (
 			description: String!
 			category: String!
 			boughtKG: Float!
+		}
+		input ListReviewInput{
+			productID: ID = "0"
+			shopID: ID = "0"
 		}
 		input ListProductInput{
 			category: String = ""

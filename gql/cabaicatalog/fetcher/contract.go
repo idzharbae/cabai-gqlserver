@@ -11,3 +11,7 @@ type ProductReader interface {
 	GetByShopID(ctx context.Context, req requests.ProductsByShop) ([]*data.Product, error)
 	Get(ctx context.Context, req requests.GetProduct) (*data.Product, error)
 }
+
+type ReviewReader interface {
+	List(ctx context.Context, req requests.ListReview) ([]*data.Review, error)
+}

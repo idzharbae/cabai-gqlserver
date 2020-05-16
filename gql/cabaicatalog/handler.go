@@ -11,13 +11,27 @@ import (
 type CabaiCatalogHandler struct {
 	productReader fetcher.ProductReader
 	productWriter mutator.ProductWriter
+	reviewReader  fetcher.ReviewReader
 }
 
-func NewCabaiCatalogHandler(productReader fetcher.ProductReader, productWriter mutator.ProductWriter) *CabaiCatalogHandler {
+func NewCabaiCatalogHandler(productReader fetcher.ProductReader, productWriter mutator.ProductWriter,
+	reviewReader fetcher.ReviewReader) *CabaiCatalogHandler {
 	return &CabaiCatalogHandler{
 		productReader: productReader,
 		productWriter: productWriter,
+		reviewReader:  reviewReader,
 	}
+}
+
+func (r *CabaiCatalogHandler) Reviews(ctx context.Context, args struct {
+	Params requests.ListReview
+}) (*[]*resolver.Review, error) {
+	res, err := r.reviewReader.List(ctx, args.Params)
+	if err != nil {
+		return nil, err
+	}
+	reviews := resolver.NewReviews(res)
+	return &reviews, nil
 }
 
 func (r *CabaiCatalogHandler) SearchProducts(ctx context.Context, args struct {
