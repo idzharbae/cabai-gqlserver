@@ -73,3 +73,9 @@ func (p *Product) Description() string {
 func (p *Product) Category() string {
 	return ""
 }
+func (p *Product) TotalReviews() int32 {
+	return 0
+}
+func (p *Product) AverageRating() float64 {
+	return 0
+}

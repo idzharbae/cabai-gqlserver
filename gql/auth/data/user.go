@@ -26,6 +26,8 @@ type User struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	Saldo         string
+	TotalProducts int32
+	AverageRating float64
 }
 
 func UserFromToken(token string) (User, error) {

@@ -72,3 +72,9 @@ func (u *User) UpdatedAt() string {
 func (u *User) Saldo() string {
 	return u.Data.Saldo
 }
+func (u *User) TotalProducts() int32 {
+	return u.Data.TotalProducts
+}
+func (u *User) AverageRating() float64 {
+	return u.Data.AverageRating
+}
