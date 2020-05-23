@@ -77,3 +77,10 @@ func (p *Product) Category() string {
 func (p *Product) BoughtKG() float64 {
 	return 0
 }
+
+func (p *Product) TotalReviews() int32 {
+	return p.Data.TotalReviews
+}
+func (p *Product) AverageRating() float64 {
+	return p.Data.AverageRating
+}

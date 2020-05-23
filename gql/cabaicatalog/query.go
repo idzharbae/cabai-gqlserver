@@ -51,6 +51,8 @@ const (
 			description: String!
 			category: String!
 			boughtKG: Float!
+			totalReviews: Int!
+			averageRating: Float!
 		}
 		input ListReviewInput{
 			productID: ID = "0"
