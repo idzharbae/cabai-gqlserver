@@ -17,6 +17,16 @@ func NewReviewReader(conn connection.CatalogConnection) *ReviewReader {
 	return &ReviewReader{conn: conn}
 }
 
+func (r *ReviewReader) Get(ctx context.Context, reviewID int32) (*data.Review, error) {
+	res, err := r.conn.GetReview(ctx, &catalogproto.GetReviewReq{
+		ReviewId: int64(reviewID),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return data.ReviewFromProto(res), nil
+}
+
 func (r *ReviewReader) List(ctx context.Context, req requests.ListReview) ([]*data.Review, error) {
 	productID, err := strconv.ParseInt(req.ProductID, 10, 64)
 	if err != nil {

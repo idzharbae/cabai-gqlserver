@@ -7,6 +7,7 @@ const (
 		productsByShop(params: ProductsByShopInput!): [Product]
 		product(params: GetProductInput!): Product
 		reviews(params: ListReviewInput!): [Review]
+		review(reviewId: Int!): Review
 	`
 	Mutation = `
 		# Create new cabai product
