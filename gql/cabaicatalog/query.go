@@ -58,6 +58,10 @@ const (
 			productID: ID = "0"
 			shopID: ID = "0"
 		}
+		input ListReviewInput{
+			productID: ID = "0"
+			shopID: ID = "0"
+		}
 		input ListProductInput{
 			category: String = ""
 			search: String = ""
