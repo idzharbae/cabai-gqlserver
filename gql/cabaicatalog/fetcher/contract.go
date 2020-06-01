@@ -14,5 +14,5 @@ type ProductReader interface {
 
 type ReviewReader interface {
 	List(ctx context.Context, req requests.ListReview) ([]*data.Review, error)
-	Get(ctx context.Context, reviewID int32) (*data.Review, error)
+	Get(ctx context.Context, req requests.GetReview) (*data.Review, error)
 }

@@ -27,6 +27,11 @@ type UpdateReview struct {
 	Photo     *upload.GraphQLUpload
 	Rating    float64
 }
+type GetReview struct {
+	ID         string
+	CustomerID string
+	ProductID  string
+}
 type DeleteReview struct {
 	ID     string
 	UserID string

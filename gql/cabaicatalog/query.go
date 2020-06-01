@@ -7,7 +7,7 @@ const (
 		productsByShop(params: ProductsByShopInput!): [Product]
 		product(params: GetProductInput!): Product
 		reviews(params: ListReviewInput!): [Review]
-		review(reviewId: Int!): Review
+		review(params: GetReviewInput!): Review
 	`
 	Mutation = `
 		# Create new cabai product
@@ -58,10 +58,8 @@ const (
 		input ListReviewInput{
 			productID: ID = "0"
 			shopID: ID = "0"
-		}
-		input ListReviewInput{
-			productID: ID = "0"
-			shopID: ID = "0"
+			page: Int = 1
+			Limit: Int = 10
 		}
 		input ListProductInput{
 			category: String = ""
@@ -71,6 +69,11 @@ const (
 			orderType: String = ""
 			page: Int = 1
 			limit: Int = 10
+		}
+		input GetReviewInput {
+			id: String = "0"
+			customerID: String = "0"
+			productID: String = "0"
 		}
 		input ProductsByShopInput{	
 			shopID: Int!

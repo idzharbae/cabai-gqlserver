@@ -28,9 +28,13 @@ func NewCabaiCatalogHandler(productReader fetcher.ProductReader, productWriter m
 }
 
 func (r *CabaiCatalogHandler) Review(ctx context.Context, args struct {
-	ReviewID int32
+	Params requests.GetReview
 }) (*resolver.Review, error) {
-	res, err := r.reviewReader.Get(ctx, args.ReviewID)
+	res, err := r.reviewReader.Get(ctx, requests.GetReview{
+		ID:         args.Params.ID,
+		CustomerID: args.Params.CustomerID,
+		ProductID:  args.Params.ProductID,
+	})
 	if err != nil {
 		return nil, err
 	}
